@@ -18,7 +18,7 @@ const initialState: ThemeProviderState = {
     setTheme: () => null,
 }
 
-const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
 
 export function ThemeProvider({
                                   children,

@@ -115,6 +115,16 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground select-none;
   }
+    :root {
+        --progress-gray: 220 8% 70%;
+        --progress-blue: 217 90% 60%;
+    }
+
+    .dark {
+        --progress-gray: 220 8% 40%;
+        --progress-blue: 217 90% 50%;
+
+    }
 }
