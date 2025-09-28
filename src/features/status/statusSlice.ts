@@ -43,7 +43,6 @@ export const statusSlice = createSlice({
         resetStatusState: () => initValue,
         processWsPayload: (store, action: PayloadAction<any>) => {
             if (action.payload) {
-                console.log(action.payload);
                 store.status = action.payload as MpdStatus;
             } else {
                 store.status= null;

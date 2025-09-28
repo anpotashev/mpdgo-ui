@@ -2,11 +2,11 @@ import {v4 as uuidv4} from 'uuid';
 import {WsMessagePayloadType} from "@/types/wsPayload";
 
 interface wsRequest {
-    '@type': WsMessagePayloadType;
+    '@type': string;
     requestId: string;
     payload: object;
 }
-const getWsRequest = (type: WsMessagePayloadType, payload: object): wsRequest  => {
+const getWsRequest = (type: string, payload: object): wsRequest  => {
     return {
         '@type': type,
         requestId: uuidv4(),

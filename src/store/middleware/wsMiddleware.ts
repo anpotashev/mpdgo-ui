@@ -45,11 +45,8 @@ export const wsMiddleware: Middleware<object, unknown> =
 
         // --- Отправка сообщений ---
         if (wsSend.match(action)) {
-            console.log("sending", action);
             if (socket && socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify(action.payload));
-            } else {
-                console.warn("WS not open, cannot send:", action.payload);
             }
         }
 

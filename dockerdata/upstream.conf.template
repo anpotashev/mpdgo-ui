@@ -1,0 +1,6 @@
+upstream backend {
+  server ${MPDGO_HOST}:${MPDGO_PORT};
+}
+upstream mpdstream {
+  server ${MPDSERVER_HOST}:${MPDSERVER_STREAM_PORT};
+}

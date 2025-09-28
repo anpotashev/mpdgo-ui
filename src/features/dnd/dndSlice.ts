@@ -19,12 +19,10 @@ export const dndSlice = createSlice({
     initialState: initValue,
     reducers: {
         startDrag: (state, action: PayloadAction<DragItem>) => {
-            console.log("startDrag", action.payload);
             state.draggingItem = action.payload;
         },
-        stopDrag: (store, action: PayloadAction<any>) => {
+        stopDrag: (store) => {
             store.draggingItem = null;
-            console.log(action);
         },
     },
 });

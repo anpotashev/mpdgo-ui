@@ -4,32 +4,43 @@ import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareI
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 
 import {
-    clearCurrentPlaylist, next, pause, play, prev, shuffleCurrentPlaylist, stop
+    clearCurrentPlaylist, deleteByPos, next, pause, play, prev, shuffleCurrentPlaylist, stop
 } from "@/features/wsRequestPayloads.ts";
+import {dndSlice} from "@/features/dnd/dndSlice.ts";
 
 export const ControlPanel = () => {
     const dispatch = useAppDispatch();
     const status = useAppSelector((state) => state.status.status ?? null);
-    // const draggingItem = useAppSelector((state) => state.dnd.draggingItem);
+    const draggingItem = useAppSelector((state) => state.dnd.draggingItem);
     const items = useAppSelector(state => state.playlist.items) ?? [];
-    const shuffleClearEnabled = items.length > 0;
-    const stopEnabled = status?.state === "play" || status?.state === "pause";
-    const nextPrevEnabled = status?.state === "play" || status?.state === "pause";
-    const playEnabled = shuffleClearEnabled && (status?.state === "pause" || status?.state === "stop");
-    const pauseEnabled = status?.state === "play" || status?.state === "pause";
+    const shuffleEnabled = !draggingItem && items.length > 0;
+    const clearEnabled = (!draggingItem || draggingItem.source === "playlist") && items.length > 0;
+    const stopEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
+    const nextPrevEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
+    const playEnabled = !draggingItem && shuffleEnabled && (status?.state === "pause" || status?.state === "stop");
+    const pauseEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
 
     const buttonClass = "rounded-full " +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
+
+    function deleteTrack() {
+        if (draggingItem && draggingItem.source === "playlist") {
+            dispatch(wsSend(deleteByPos(draggingItem.pos!)));
+        }
+        dispatch(dndSlice.actions.stopDrag());
+    }
+
     return (
         <div className={"m-1"}>
             <Button className={buttonClass} onClick={() => dispatch(wsSend(clearCurrentPlaylist()))}
-                    disabled={!shuffleClearEnabled}><TrashIcon/></Button>
+                    disabled={!clearEnabled} onMouseUp={deleteTrack}><TrashIcon/></Button>
             <Button className={buttonClass} onClick={() => dispatch(wsSend(shuffleCurrentPlaylist()))}
-                    disabled={!shuffleClearEnabled}><ShuffleIcon/></Button>
+                    disabled={!shuffleEnabled}><ShuffleIcon/></Button>
             <Button className={buttonClass} onClick={() => dispatch(wsSend(prev()))}
                     disabled={!nextPrevEnabled}><SkipBackIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(play()))} disabled={!playEnabled}><PlayIcon/></Button>
+            <Button className={buttonClass} onClick={() => dispatch(wsSend(play()))}
+                    disabled={!playEnabled}><PlayIcon/></Button>
             <Button className={buttonClass} onClick={() => dispatch(wsSend(pause()))}
                     disabled={!pauseEnabled}><PauseIcon/></Button>
             <Button className={buttonClass} onClick={() => dispatch(wsSend(stop()))}

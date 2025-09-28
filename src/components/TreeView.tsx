@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import type {RootState} from "@/store/store";
-import {useAppDispatch} from "@/app/hooks";
+import {useAppDispatch, useAppSelector} from "@/app/hooks";
 import {dndSlice, type DragItem} from "@/features/dnd/dndSlice";
 import {ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger} from "@/components/ui/context-menu.tsx";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
@@ -42,11 +42,11 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
                 <div className="ml-1 flex flex-col items-start whitespace-nowrap">
                     <div className="cursor-pointer select-none"
                          onClick={() => setOpen(!open)}
-                         // onMouseDown={() => dispatch(dndSlice.actions.startDrag({
-                         //     source: "tree",
-                         //     path: dir.path,
-                         //     name: dir.name,
-                         // } as DragItem))}
+                         onMouseDown={() => dispatch(dndSlice.actions.startDrag({
+                             source: "tree",
+                             path: dir.path,
+                             name: dir.name,
+                         } as DragItem))}
                     >
                         {open ? "📂" : "📁"} {dir.name}
                     </div>
@@ -61,7 +61,6 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
                 </div>
             </ContextMenuTrigger>
             <ContextMenuContent>
-                <ContextMenuItem onClick={() => console.log("aaa")}>ttt</ContextMenuItem>
                 <ContextMenuItem onClick={()=>dispatch(wsSend(addToPos(0, dir.path)))}>Add</ContextMenuItem>
                 {/*<ContextMenuItem>Billing</ContextMenuItem>*/}
                 {/*<ContextMenuItem>Team<//ContextMenuItem>*/}
@@ -74,7 +73,10 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
 // Основной компонент дерева
 export const TreeView: React.FC = () => {
     const root = useSelector((state: RootState) => state.tree.root);
-
+    const connected = useAppSelector((state) => state.connection.connected) ?? false;
+    if (!connected) {
+        return <>[Not Connected]</> 
+    }
     return (
         <div className="flex flex-col items-start overflow-auto">
             <DirectoryNode dir={root}/>

@@ -39,9 +39,7 @@ export const MpdDatabasePanel = () => {
         </ResizablePanel>
         <ResizableHandle/>
         <ResizablePanel>
-            <ScrollArea className="w-full h-full">
             <PlaylistPanel/>
-            </ScrollArea>
         </ResizablePanel>
     </ResizablePanelGroup>
     </div>

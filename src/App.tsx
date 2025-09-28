@@ -5,13 +5,14 @@ import {MainElement} from "@/components/MainElement.tsx";
 
 function App() {
 
-  return (
-
-      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-          <WsGate url="ws://localhost:8080/v1/ws"><MainElement/>
-          </WsGate>
-      </ThemeProvider>
-  )
+    const wsUrl = import.meta.env.VITE_BACKEND_URL;
+    const wsUrl2 = wsUrl.startsWith("ws") ? wsUrl : `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}${wsUrl}`
+    return (
+        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+            <WsGate url={wsUrl2}><MainElement/>
+            </WsGate>
+        </ThemeProvider>
+    )
 }
 
 export default App

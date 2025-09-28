@@ -15,7 +15,11 @@ import {
     setSingle
 } from "@/features/wsRequestPayloads.ts";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {Music4Icon, SettingsIcon} from 'lucide-react'
+import {
+    Music4Icon,
+    PlugIcon,
+    SettingsIcon, SpeakerIcon
+} from 'lucide-react'
 import {Label} from "@/components/ui/label.tsx";
 
 export const MpdMenuBar = () => {
@@ -33,7 +37,7 @@ export const MpdMenuBar = () => {
             <Label className={"text-blue-400"}><Music4Icon/>MPD Client</Label>
             <MenubarMenu>
                 {/*<Label style={styles.logo}></Label>*/}
-                <MenubarTrigger>Connection</MenubarTrigger>
+                <MenubarTrigger><PlugIcon/>Connection</MenubarTrigger>
                 <MenubarContent>
                     <MenubarCheckboxItem
                         onClick={() => dispatch(wsSend(setConnectionState(!connected)))}
@@ -43,7 +47,7 @@ export const MpdMenuBar = () => {
                 {connected &&
                     <>
                         <MenubarMenu>
-                            <MenubarTrigger><SettingsIcon/>Settings</MenubarTrigger>
+                            <MenubarTrigger><SettingsIcon/>Playback settings</MenubarTrigger>
                             <MenubarContent>
                                 <MenubarCheckboxItem
                                     checked={randomEnabled}
@@ -65,7 +69,7 @@ export const MpdMenuBar = () => {
                             </MenubarContent>
                         </MenubarMenu>
                         <MenubarMenu>
-                            <MenubarTrigger>Outputs</MenubarTrigger>
+                            <MenubarTrigger><SpeakerIcon/>Audio outputs</MenubarTrigger>
                             <MenubarContent>
                                 {outputs.map((output, id) => <MenubarCheckboxItem
                                     checked={output.enabled}

@@ -2,10 +2,9 @@ import React, {useEffect, useRef} from "react";
 import {useAppSelector} from "@/app/hooks";
 
 
-const STREAM_URL = "http://192.168.0.110:18000/mpd.mp3";
+const STREAM_URL = import.meta.env.VITE_STREAM_URL;
 
 export const StreamPlayer: React.FC = () => {
-    console.log("streamPlayer");
     const status = useAppSelector((state) => state.status.status);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -17,9 +16,7 @@ export const StreamPlayer: React.FC = () => {
             // всегда пересоздаём src, чтобы избежать таймшифта
             audio.src = STREAM_URL;
             audio.load();
-            audio.play().catch((err) => {
-                console.error("Ошибка при старте воспроизведения:", err);
-            });
+            audio.play();
         } else {
             audio.pause();
             audio.removeAttribute("src");
