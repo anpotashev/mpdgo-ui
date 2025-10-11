@@ -38,4 +38,3 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USER }}/mpdgo-ui:latest
             ${{ secrets.DOCKER_USER }}/mpdgo-ui:${{ github.sha }}
-

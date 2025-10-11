@@ -14,6 +14,7 @@ export const WsMessagePayloadType = {
     moveInCurrentPlaylist: "current_playlist/move",
     batchMoveInCurrentPlaylist: "current_playlist/batch_move",
     getTree: "tree/get",
+    updateTree: "tree/update",
     play: "playback/play",
     pause: "playback/pause",
     stop: "playback/stop",

@@ -48,3 +48,5 @@ export const playPos = (pos: number)=> getWsRequest(WsMessagePayloadType.playPos
 export const moveItemToPos = (posFrom: number, posTo: number) => getWsRequest(WsMessagePayloadType.moveInCurrentPlaylist, {from_pos: posFrom, to_pos: posTo});
 
 export const deleteByPos = (pos: number) => getWsRequest(WsMessagePayloadType.deleteByPosFromCurrentPlaylist, {pos: pos});
+
+export const updateTree = (path: string) => getWsRequest(WsMessagePayloadType.updateTree, {path: path});
