@@ -4,7 +4,7 @@ import {
     MenubarMenu,
     MenubarTrigger,
 } from "@/components/ui/menubar"
-import {ModeToggle} from "@/components/ModeToggle.tsx";
+import {ModeToggle} from "@/components/desktop/ModeToggle.tsx";
 import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {
     setConnectionState,

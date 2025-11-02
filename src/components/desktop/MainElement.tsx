@@ -1,11 +1,11 @@
-import {MpdMenuBar} from "@/components/MpdMenuBar.tsx";
-import {MpdPlayingProgress} from "@/components/MpdPlayingProgress.tsx";
-import {ControlPanel} from "@/components/ControlPanel.tsx";
-import {MpdDatabasePanel} from "@/components/MpdDatabasePanel.tsx";
-import {StreamPlayer} from "@/components/StreamPlayer.tsx";
+import {MpdMenuBar} from "@/components/desktop/MpdMenuBar.tsx";
+import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
+import {ControlPanel} from "@/components/desktop/ControlPanel.tsx";
+import {MpdDatabasePanel} from "@/components/desktop/MpdDatabasePanel.tsx";
+import {StreamPlayer} from "@/components/common/StreamPlayer.tsx";
 import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {dndSlice} from "@/features/dnd/dndSlice.ts";
-import {DragPreview} from "@/components/DragPreview.tsx";
+import {DragPreview} from "@/components/desktop/DragPreview.tsx";
 
 
 export const MainElement = () => {

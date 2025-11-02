@@ -12,7 +12,7 @@ import {
     ContextMenuTrigger
 } from "@/components/ui/context-menu";
 import {addStoredPlaylistToPos, addToPos, moveItemToPos, playPos} from "@/features/wsRequestPayloads.ts";
-import {ScrollArea} from "./ui/scroll-area";
+import {ScrollArea} from "@/components/ui/scroll-area";
 
 type Column = "Id" | "Title" | "Artist" | "Album" | "Time"
 

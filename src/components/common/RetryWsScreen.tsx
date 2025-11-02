@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {wsConnect} from "@/store/middleware/wsMiddleware"; // скорректируй путь
+import {wsConnect} from "@/store/middleware/wsMiddleware";
 import type {RootState} from "@/store/store";
 import {Button} from "@/components/ui/button.tsx";
-import {Label} from "@/components/ui/label.tsx"; // скорректируй путь
+import {Label} from "@/components/ui/label.tsx";
 
 type RetryWsScreenProps = {
     url: string;

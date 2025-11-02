@@ -1,5 +1,5 @@
 import { Moon, Sun } from "lucide-react"
-import { useTheme } from "@/components/theme-provider"
+import { useTheme } from "@/components/common/theme-provider.tsx"
 import {MenubarCheckboxItem, MenubarContent, MenubarMenu, MenubarTrigger} from "@/components/ui/menubar.tsx";
 import * as React from "react";
 import * as MenubarPrimitive from "@radix-ui/react-menubar";

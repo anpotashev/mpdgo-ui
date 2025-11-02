@@ -1,7 +1,7 @@
 import React from "react";
 import {useSelector} from "react-redux";
 import type {RootState} from "@/store/store";
-import {RetryWsScreen} from "./RetryWsScreen";
+import {RetryWsScreen} from "@/components/common/RetryWsScreen.tsx";
 
 type WsGateProps = {
     url: string;

@@ -5,10 +5,10 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
-import {TreeView} from "@/components/TreeView.tsx";
-import {PlaylistPanel} from "@/components/PlaylistPanel.tsx";
+import {TreeView} from "@/components/desktop/TreeView.tsx";
+import {PlaylistPanel} from "@/components/desktop/PlaylistPanel.tsx";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
-import {StoredPlaylistsView} from "@/components/StoredPlaylistsView.tsx";
+import {StoredPlaylistsView} from "@/components/desktop/StoredPlaylistsView.tsx";
 
 export const MpdDatabasePanel = () => {
 

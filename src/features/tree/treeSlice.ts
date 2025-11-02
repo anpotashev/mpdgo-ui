@@ -1,12 +1,12 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
-interface DirectoryItem {
+export interface DirectoryItem {
     path: string;
     name: string;
     children: TreeItem[];
 }
 
-interface FileItem {
+export interface FileItem {
     path: string;
     name: string;
     time?: string;
@@ -18,7 +18,7 @@ interface FileItem {
     date?: string;
 }
 
-type TreeItem = DirectoryItem | FileItem;
+export type TreeItem = DirectoryItem | FileItem;
 
 interface Tree {
     root: DirectoryItem
