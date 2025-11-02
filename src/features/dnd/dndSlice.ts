@@ -1,7 +1,7 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
 export interface DragItem {
-    source: "tree"|"playlist"
+    source: "tree"|"playlist" | "stored_playlist"
     path: string | null
     pos: number | null
     name: string | null

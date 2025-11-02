@@ -8,6 +8,7 @@ import {
 import {TreeView} from "@/components/TreeView.tsx";
 import {PlaylistPanel} from "@/components/PlaylistPanel.tsx";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
+import {StoredPlaylistsView} from "@/components/StoredPlaylistsView.tsx";
 
 export const MpdDatabasePanel = () => {
 
@@ -25,7 +26,7 @@ export const MpdDatabasePanel = () => {
                 <AccordionItem value="stored-playlists">
                     <AccordionTrigger>Playlists</AccordionTrigger>
                     <AccordionContent>
-                        [Coming soon]
+                        <StoredPlaylistsView/>
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="search">

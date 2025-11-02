@@ -4,7 +4,7 @@ import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareI
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 
 import {
-    clearCurrentPlaylist, deleteByPos, next, pause, play, prev, shuffleCurrentPlaylist, stop
+    clearCurrentPlaylist, deleteByPos, deleteStoredPlaylist, next, pause, play, prev, shuffleCurrentPlaylist, stop
 } from "@/features/wsRequestPayloads.ts";
 import {dndSlice} from "@/features/dnd/dndSlice.ts";
 
@@ -14,7 +14,7 @@ export const ControlPanel = () => {
     const draggingItem = useAppSelector((state) => state.dnd.draggingItem);
     const items = useAppSelector(state => state.playlist.items) ?? [];
     const shuffleEnabled = !draggingItem && items.length > 0;
-    const clearEnabled = (!draggingItem || draggingItem.source === "playlist") && items.length > 0;
+    const clearEnabled = ((!draggingItem || draggingItem.source === "playlist") && items.length > 0) || (draggingItem && draggingItem.source === "stored_playlist");
     const stopEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
     const nextPrevEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
     const playEnabled = !draggingItem && shuffleEnabled && (status?.state === "pause" || status?.state === "stop");
@@ -25,8 +25,13 @@ export const ControlPanel = () => {
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
 
     function deleteTrack() {
-        if (draggingItem && draggingItem.source === "playlist") {
-            dispatch(wsSend(deleteByPos(draggingItem.pos!)));
+        if (draggingItem) {
+            if (draggingItem.source === "playlist") {
+                dispatch(wsSend(deleteByPos(draggingItem.pos!)));
+            }
+            if (draggingItem.source === "stored_playlist") {
+                dispatch(wsSend(deleteStoredPlaylist(draggingItem.name!)))
+            }
         }
         dispatch(dndSlice.actions.stopDrag());
     }

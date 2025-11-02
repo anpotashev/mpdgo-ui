@@ -7,6 +7,7 @@ import currentPlaylistReducer from "@/features/currentPlaylist/currentPlaylistSl
 import treeReducer from "@/features/tree/treeSlice"
 import outputReducer from "@/features/output/outputSlice";
 import dndReducer from "@/features/dnd/dndSlice";
+import storedPlaylistsReducer from '@/features/storedPlaylists/storedPlaylistsSlice'
 import {wsMiddleware} from "@/store/middleware/wsMiddleware";
 import {wsMessageMiddleware} from "@/store/middleware/wsMessageMiddleware";
 
@@ -20,6 +21,7 @@ export const store = configureStore({
         tree: treeReducer,
         output: outputReducer,
         dnd: dndReducer,
+        storedPlaylists: storedPlaylistsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(wsMiddleware, wsMessageMiddleware),

@@ -6,6 +6,7 @@ import {statusSlice} from "@/features/status/statusSlice";
 import {currentPlaylistSlice} from "@/features/currentPlaylist/currentPlaylistSlice";
 import {treeSlice} from "@/features/tree/treeSlice";
 import {outputSlice} from "@/features/output/outputSlice";
+import {storedPlaylistsSlice} from "@/features/storedPlaylists/storedPlaylistsSlice.ts";
 
 export const wsProcessData = createAction<string>("ws/processData"); // payload = сообщение
 
@@ -36,6 +37,9 @@ function handleData(store: MiddlewareAPI<Dispatch, unknown>, data: WsMessage) {
             break
         case WsMessagePayloadType.listOutputs:
             store.dispatch(outputSlice.actions.processWsPayload(data.payload));
+            break;
+        case WsMessagePayloadType.getStoredPlaylists:
+            store.dispatch(storedPlaylistsSlice.actions.processWsPayload(data.payload));
             break;
     }
 }

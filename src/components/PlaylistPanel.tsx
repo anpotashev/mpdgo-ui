@@ -11,7 +11,7 @@ import {
     ContextMenuSeparator,
     ContextMenuTrigger
 } from "@/components/ui/context-menu";
-import {addToPos, moveItemToPos, playPos} from "@/features/wsRequestPayloads.ts";
+import {addStoredPlaylistToPos, addToPos, moveItemToPos, playPos} from "@/features/wsRequestPayloads.ts";
 import {ScrollArea} from "./ui/scroll-area";
 
 type Column = "Id" | "Title" | "Artist" | "Album" | "Time"
@@ -67,6 +67,9 @@ export const PlaylistPanel: React.FC = () => {
                 if (draggingItem.pos !== null && draggingItem.pos !== pos) {
                     dispatch(wsSend(moveItemToPos(draggingItem.pos, pos)));
                 }
+            }
+            if (draggingItem?.source === "stored_playlist" && draggingItem.name) {
+                dispatch(wsSend(addStoredPlaylistToPos(pos, draggingItem.name)))
             }
             dispatch(dndSlice.actions.stopDrag());
         }

@@ -50,3 +50,7 @@ export const moveItemToPos = (posFrom: number, posTo: number) => getWsRequest(Ws
 export const deleteByPos = (pos: number) => getWsRequest(WsMessagePayloadType.deleteByPosFromCurrentPlaylist, {pos: pos});
 
 export const updateTree = (path: string) => getWsRequest(WsMessagePayloadType.updateTree, {path: path});
+
+export const deleteStoredPlaylist= (name: string) => getWsRequest(WsMessagePayloadType.deleteStoredPlaylist, {name: name});
+export const saveStoredPlaylist= (name: string) => getWsRequest(WsMessagePayloadType.saveCurrentPlaylistAsStored, {name: name});
+export const addStoredPlaylistToPos= (pos: number, name: string) => getWsRequest(WsMessagePayloadType.addStoredPlaylistToPos, {name: name, pos: pos});

@@ -20,7 +20,7 @@ export const outputSlice = createSlice({
     reducers: {
         resetStatusState: () => initValue,
         processWsPayload: (store, action: PayloadAction<any>) => {
-            if (action.payload.outputs) {
+            if (action.payload && action.payload.outputs) {
                 store.outputs = action.payload.outputs as Output[]
             } else {
                 store.outputs = null;

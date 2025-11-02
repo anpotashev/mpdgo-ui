@@ -32,6 +32,7 @@ export const WsMessagePayloadType = {
     setRepeat: "status/set_repeat",
     setSingle: "status/set_single",
     setConsume: "status/set_consume",
+    addStoredPlaylistToPos: "current_playlist/add_stored_to_pos",
 }
 type WsMessagePayloadType = typeof WsMessagePayloadType[keyof typeof WsMessagePayloadType];
 
