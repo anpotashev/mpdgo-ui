@@ -13,14 +13,13 @@ export const StreamPlayer: React.FC = () => {
         const audio = audioRef.current;
 
         if (status?.state === "play") {
-            // всегда пересоздаём src, чтобы избежать таймшифта
             audio.src = STREAM_URL;
             audio.load();
             audio.play();
         } else {
             audio.pause();
             audio.removeAttribute("src");
-            audio.load(); // очистка буфера
+            audio.load();
         }
     }, [status?.state]);
 
