@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
+import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {
     clearCurrentPlaylist, deleteByPos, moveItemToPos, next,
@@ -12,7 +12,7 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
-import {ContextMenuMobile, type Item} from "@/components/mobile/ContextMenuMobile.tsx";
+import {ContextMenuTableCellMobile, type Item} from "@/components/mobile/ContextMenuTableCellMobile.tsx";
 
 
 export const CurrentPlaylistMobile = () => {
@@ -38,8 +38,6 @@ export const CurrentPlaylistMobile = () => {
     const buttonClass = "rounded-full" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
-
-    const tableCellClass = "text-left text-xs px-1 py-0.5 border-b truncate align-top break-words whitespace-normal"
 
     const moveUp = (id: number) => {
         dispatch(wsSend(moveItemToPos(id, id - 1)));
@@ -73,7 +71,7 @@ export const CurrentPlaylistMobile = () => {
             </div>
         </>}
 
-        <Table className={"table-fixed"}>
+        <Table className={"table-fixed w-full"}>
             <TableHeader>
                 <TableRow>
                     <TableHead>#</TableHead>
@@ -101,23 +99,19 @@ export const CurrentPlaylistMobile = () => {
                         return (<TableRow
                                 key={idx}
                                 className={`${
-                                    item.pos === activePos ? (playing ? "text-blue-400" : "text-gray-400") : ""
+                                    item.pos === activePos ? (playing ? "text-blue-400 h-full align-top" : "text-gray-400 h-full align-top") : "h-full align-top"
                                 }`}
                                 onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
                             >
-                                <TableCell className={tableCellClass}>
-                                    <ContextMenuMobile items={contextMenuItems}>{idx + 1}</ContextMenuMobile>
-                                </TableCell>
-                                <TableCell className={tableCellClass}>
-                                    <ContextMenuMobile items={contextMenuItems}>{item.title ?? "-"}</ContextMenuMobile>
-                                </TableCell>
-                                <TableCell className={tableCellClass}>
-                                    <ContextMenuMobile items={contextMenuItems}>{item.artist ?? "-"}</ContextMenuMobile>
-                                </TableCell>
-                                <TableCell className={tableCellClass}>
-                                    <ContextMenuMobile items={contextMenuItems}>{item.album ?? "-"}</ContextMenuMobile></TableCell>
-                                <TableCell className={tableCellClass}>
-                                    <ContextMenuMobile items={contextMenuItems}>{formatTime(item.time)}</ContextMenuMobile></TableCell>
+                                <ContextMenuTableCellMobile items={contextMenuItems}>{idx + 1}</ContextMenuTableCellMobile>
+                                <ContextMenuTableCellMobile
+                                    items={contextMenuItems}>{item.title ?? "-"}</ContextMenuTableCellMobile>
+                                <ContextMenuTableCellMobile
+                                    items={contextMenuItems}>{item.artist ?? "-"}</ContextMenuTableCellMobile>
+                                <ContextMenuTableCellMobile
+                                    items={contextMenuItems}>{item.album ?? "-"}</ContextMenuTableCellMobile>
+                                <ContextMenuTableCellMobile
+                                    items={contextMenuItems}>{formatTime(item.time)}</ContextMenuTableCellMobile>
                             </TableRow>
                         )
                     }
