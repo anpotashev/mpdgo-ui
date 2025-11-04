@@ -102,16 +102,16 @@ export const CurrentPlaylistMobile = () => {
                                 }`}
                                 onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
                             >
-                                <TableCell className="text-left px-1 py-0.5 border-b">
+                                <TableCell className="text-left px-1 py-0.5 border-b ">
                                     <MobileContextMenu items={contextMenuItems}>{idx + 1}</MobileContextMenu>
                                 </TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b truncate">
+                                <TableCell className="text-left px-1 py-0.5 border-b truncate align-top break-words whitespace-normal">
                                     <MobileContextMenu items={contextMenuItems}>{item.title ?? "-"}</MobileContextMenu>
                                 </TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b truncate">
+                                <TableCell className="text-left px-1 py-0.5 border-b truncate align-top break-words whitespace-normal">
                                     <MobileContextMenu items={contextMenuItems}>{item.artist ?? "-"}</MobileContextMenu>
                                 </TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b truncate">
+                                <TableCell className="text-left px-1 py-0.5 border-b truncate align-top break-words whitespace-normal">
                                     <MobileContextMenu
                                         items={contextMenuItems}>{item.album ?? "-"}</MobileContextMenu></TableCell>
                                 <TableCell className="text-left px-1 py-0.5 border-b">
