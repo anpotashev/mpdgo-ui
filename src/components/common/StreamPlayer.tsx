@@ -1,16 +1,16 @@
-import React, {useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useAppSelector} from "@/app/hooks";
 
 
 const STREAM_URL = import.meta.env.VITE_STREAM_URL;
 
-export const StreamPlayer: React.FC = () => {
+export const StreamPlayer = () => {
     const status = useAppSelector((state) => state.status.status);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        if (!audioRef.current) return;
         const audio = audioRef.current;
+        if (!audio) return;
 
         if (status?.state === "play") {
             audio.src = STREAM_URL;
@@ -23,5 +23,5 @@ export const StreamPlayer: React.FC = () => {
         }
     }, [status?.state]);
 
-    return <audio ref={audioRef} hidden controls={false} />;
+    return <audio ref={audioRef} hidden controls={false} preload="auto"/>;
 };
