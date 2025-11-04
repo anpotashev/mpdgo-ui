@@ -12,7 +12,7 @@ export const MobileContextMenu: React.FC<MobileContextMenuProps> = ({ children, 
     let touchTimer: NodeJS.Timeout
 
     const handleTouchStart = () => {
-        touchTimer = setTimeout(() => setOpen(true), 300)
+        touchTimer = setTimeout(() => setOpen(true), 500)
     }
 
     const handleTouchEnd = () => clearTimeout(touchTimer)

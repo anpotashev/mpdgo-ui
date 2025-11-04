@@ -14,6 +14,7 @@ import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareI
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
 import {MobileContextMenu} from "@/components/mobile/MobileContextMenu.tsx";
 
+
 export const CurrentPlaylistMobile = () => {
 
     const items = useAppSelector(state => state.playlist.items) ?? [];
@@ -37,6 +38,8 @@ export const CurrentPlaylistMobile = () => {
     const buttonClass = "rounded-full" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
+
+    const tableCellClass = "text-left text-xs px-1 py-0.5 border-b truncate align-top break-words whitespace-normal"
 
     const moveUp = (id: number) => {
         dispatch(wsSend(moveItemToPos(id, id - 1)));
@@ -83,7 +86,7 @@ export const CurrentPlaylistMobile = () => {
             <TableBody>
                 {items.map((item, idx) => {
 
-                        let contextMenuItems: { label: string; onClick: () => void }[] = [];
+                        const contextMenuItems: { label: string; onClick: () => void }[] = [];
                         if (item.pos > 0) {
                             contextMenuItems.push({label: "⬆️ Move up", onClick: () => moveUp(item.pos)})
                         }
@@ -102,19 +105,18 @@ export const CurrentPlaylistMobile = () => {
                                 }`}
                                 onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
                             >
-                                <TableCell className="text-left px-1 py-0.5 border-b ">
+                                <TableCell className={tableCellClass}>
                                     <MobileContextMenu items={contextMenuItems}>{idx + 1}</MobileContextMenu>
                                 </TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b truncate align-top break-words whitespace-normal">
+                                <TableCell className={tableCellClass}>
                                     <MobileContextMenu items={contextMenuItems}>{item.title ?? "-"}</MobileContextMenu>
                                 </TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b truncate align-top break-words whitespace-normal">
+                                <TableCell className={tableCellClass}>
                                     <MobileContextMenu items={contextMenuItems}>{item.artist ?? "-"}</MobileContextMenu>
                                 </TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b truncate align-top break-words whitespace-normal">
-                                    <MobileContextMenu
-                                        items={contextMenuItems}>{item.album ?? "-"}</MobileContextMenu></TableCell>
-                                <TableCell className="text-left px-1 py-0.5 border-b">
+                                <TableCell className={tableCellClass}>
+                                    <MobileContextMenu items={contextMenuItems}>{item.album ?? "-"}</MobileContextMenu></TableCell>
+                                <TableCell className={tableCellClass}>
                                     <MobileContextMenu items={contextMenuItems}>{formatTime(item.time)}</MobileContextMenu></TableCell>
                             </TableRow>
                         )
