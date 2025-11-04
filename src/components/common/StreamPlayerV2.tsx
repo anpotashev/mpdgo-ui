@@ -11,7 +11,9 @@ export const StreamPlayerV2: React.FC = () => {
     useEffect(() => {
         if (playing) {
             load(STREAM_URL, {
-                initialVolume: 0.75,
+                html5: true,
+                format: "mp3",
+                autoplay: true,
             })
             play()
         } else {
