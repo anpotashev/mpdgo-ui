@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
-import {Table, TableBody, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {
     clearCurrentPlaylist, deleteByPos, moveItemToPos, next,
@@ -12,10 +12,10 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
-import {ContextMenuTableCellMobile, type Item} from "@/components/mobile/ContextMenuTableCellMobile.tsx";
+import {ContextMenuTableRowMobile, type Item} from "@/components/mobile/ContextMenuTableRowMobile.tsx";
 
 
-export const CurrentPlaylistMobile = () => {
+const CurrentPlaylistMobile = () => {
 
     const items = useAppSelector(state => state.playlist.items) ?? [];
 
@@ -39,6 +39,7 @@ export const CurrentPlaylistMobile = () => {
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
 
+    const tableCellClass="text-left text-xs px-1 py-0.5 border-b align-top break-words whitespace-normal";
     const moveUp = (id: number) => {
         dispatch(wsSend(moveItemToPos(id, id - 1)));
     }
@@ -96,23 +97,20 @@ export const CurrentPlaylistMobile = () => {
                         }
                         contextMenuItems.push({label: "🗑️ Delete", onClick: () => deleteItem(item.pos)})
 
-                        return (<TableRow
+                        return (<ContextMenuTableRowMobile
+                                items={contextMenuItems}
                                 key={idx}
                                 className={`${
-                                    item.pos === activePos ? (playing ? "text-blue-400 h-full align-top" : "text-gray-400 h-full align-top") : "h-full align-top"
+                                    item.pos === activePos ? (playing ? "text-blue-400" : "text-gray-400") : ""
                                 }`}
                                 onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
                             >
-                                <ContextMenuTableCellMobile items={contextMenuItems}>{idx + 1}</ContextMenuTableCellMobile>
-                                <ContextMenuTableCellMobile
-                                    items={contextMenuItems}>{item.title ?? "-"}</ContextMenuTableCellMobile>
-                                <ContextMenuTableCellMobile
-                                    items={contextMenuItems}>{item.artist ?? "-"}</ContextMenuTableCellMobile>
-                                <ContextMenuTableCellMobile
-                                    items={contextMenuItems}>{item.album ?? "-"}</ContextMenuTableCellMobile>
-                                <ContextMenuTableCellMobile
-                                    items={contextMenuItems}>{formatTime(item.time)}</ContextMenuTableCellMobile>
-                            </TableRow>
+                                <TableCell className={tableCellClass}>{idx + 1}</TableCell>
+                                <TableCell className={tableCellClass}>{item.title ?? "-"}</TableCell>
+                                <TableCell className={tableCellClass}>{item.artist ?? "-"}</TableCell>
+                                <TableCell className={tableCellClass}>{item.album ?? "-"}</TableCell>
+                                <TableCell className={tableCellClass}>{formatTime(item.time)}</TableCell>
+                            </ContextMenuTableRowMobile>
                         )
                     }
                 )}
@@ -120,3 +118,4 @@ export const CurrentPlaylistMobile = () => {
         </Table>
     </>
 }
+export default CurrentPlaylistMobile

@@ -19,7 +19,7 @@ import {OutputsMobile} from "@/components/mobile/OutputsMobile.tsx";
 import {PlaybackControlMobile} from "@/components/mobile/PlaybackControlMobile.tsx";
 import {StoredPlaylistsMobile} from "@/components/mobile/StoredPlaylistsMobile.tsx";
 import {TreeMobile} from "@/components/mobile/TreeMobile.tsx";
-import {CurrentPlaylistMobile} from "@/components/mobile/CurrentPlaylistMobile.tsx";
+import CurrentPlaylistMobile from "@/components/mobile/CurrentPlaylistMobile.tsx";
 import {useSelector} from "react-redux";
 import type {RootState} from "@/store/store.ts";
 

@@ -1,16 +1,21 @@
 import React, {useRef, useState} from "react"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import {TableCell} from "@/components/ui/table.tsx";
+import { TableRow} from "@/components/ui/table.tsx";
 
 export interface Item { label: string; onClick: () => void }
 
-interface ContextMenuMobileProps {
+export interface ContextMenuTableRowProps
+    extends React.ComponentPropsWithoutRef<"tr"> {
     children: React.ReactNode
     items: Item[]
 }
 
-export const ContextMenuTableCellMobile: React.FC<ContextMenuMobileProps> = ({ children, items }) => {
+export const ContextMenuTableRowMobile: React.FC<ContextMenuTableRowProps> = ({
+                                                                                  children,
+                                                                                  items,
+                                                                                  ...props
+                                                                              }) => {
     const [open, setOpen] = useState(false)
     const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
     const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -43,14 +48,14 @@ export const ContextMenuTableCellMobile: React.FC<ContextMenuMobileProps> = ({ c
 
     return (
         <>
-            <TableCell
+            <TableRow
+                {...props}
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}
-                className="text-left text-xs px-1 py-0.5 border-b align-top break-words whitespace-normal"
             >
                 {children}
-            </TableCell>
+            </TableRow>
 
             <Sheet open={open} onOpenChange={setOpen}>
                 <SheetContent side="bottom" className="p-2 space-y-2 text-left">
