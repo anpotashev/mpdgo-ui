@@ -1,7 +1,6 @@
 import {Accordion, AccordionTrigger} from "@/components/ui/accordion.tsx";
 import {AccordionContent, AccordionItem} from "@radix-ui/react-accordion";
 import {useAppSelector} from "@/app/hooks.ts";
-import {StreamPlayer} from "@/components/common/StreamPlayer.tsx";
 import {SettingsMobile} from "@/components/mobile/SettingsMobile.tsx";
 import {ConnectionMobile} from "@/components/mobile/ConnectionMobile.tsx";
 import {ModeToggleMobile} from "@/components/mobile/ModeToggleMobile.tsx";
@@ -28,7 +27,6 @@ export const MainElementMobile = () => {
 
     const currentPlaylistIsEmpty = useSelector((state: RootState) => (state.playlist?.items?.length) ?? 0) === 0
     return <>
-        <StreamPlayer/>
         <Accordion type="single" collapsible>
             <AccordionItem value="Theme">
                 <AccordionTrigger>

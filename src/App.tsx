@@ -3,17 +3,19 @@ import {ThemeProvider} from "@/components/common/theme-provider.tsx";
 import {WsGate} from "@/components/common/WsGate.tsx";
 import {MainElement} from "@/components/desktop/MainElement.tsx";
 import {MainElementMobile} from "@/components/mobile/MainElementMobile.tsx";
-import { isMobile, isTablet } from "react-device-detect"
+import {isMobile, isTablet} from "react-device-detect"
+import {StreamPlayerV2} from "@/components/common/StreamPlayerV2.tsx";
 
 function App() {
 
     const wsUrl = import.meta.env.VITE_BACKEND_URL;
     const wsUrl2 = wsUrl.startsWith("ws") ? wsUrl : `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}${wsUrl}`
-    return (
-        <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-            <WsGate url={wsUrl2}>{isMobile || isTablet ?  <MainElementMobile/> : <MainElement/> }
-            </WsGate>
-        </ThemeProvider>
+    return (<><StreamPlayerV2/>
+            <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+                <WsGate url={wsUrl2}>{isMobile || isTablet ? <MainElementMobile/> : <MainElement/>}
+                </WsGate>
+            </ThemeProvider>
+        </>
     )
 }
 
