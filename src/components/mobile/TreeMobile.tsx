@@ -7,7 +7,7 @@ import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {addToPos, updateTree} from "@/features/wsRequestPayloads.ts";
 import {useSelector} from "react-redux";
 import type {RootState} from "@/store/store.ts";
-import {MobileContextMenu} from "@/components/mobile/MobileContextMenu.tsx";
+import {ContextMenuMobile} from "@/components/mobile/ContextMenuMobile.tsx";
 
 export const TreeMobile = () => {
     const rootFolder = useAppSelector(state => state.tree.root);
@@ -34,7 +34,7 @@ export const TreeMobile = () => {
 
     return <>
         {folderStack.length > 1 &&
-            <MobileContextMenu
+            <ContextMenuMobile
                 items={[
                     {label: "⬆️ Add first", onClick: () => addFirst(folderStack[folderStack.length - 1].path)},
                     {label: "⬇️ Add last",onClick: () => addLast( folderStack[folderStack.length - 1].path)},
@@ -48,12 +48,12 @@ export const TreeMobile = () => {
                     <FolderUpIcon className="size-5 flex-shrink-0"/>
                     <span className="truncate">{folderStack[folderStack.length - 1].name}</span>
                 </Label>
-            </MobileContextMenu>
+            </ContextMenuMobile>
         }
         <ul>
             {currentFolder.children.map((item, key) => (
                 isDir(item) &&
-                <MobileContextMenu
+                <ContextMenuMobile
                     items={[
                         {label: "⬆️ Add first", onClick: () => addFirst(item.path)},
                         {label: "⬇️ Add last",onClick: () => addLast(item.path)},
@@ -68,12 +68,12 @@ export const TreeMobile = () => {
                             onClick={() => goToFolder(item)}
                         >📁<span className="truncate">{item.name}</span></Label>
                     </li>
-                </MobileContextMenu>
+                </ContextMenuMobile>
             ))}
 
             {currentFolder.children.map((item, key) => (
                 !isDir(item) &&
-                <MobileContextMenu
+                <ContextMenuMobile
                     items={[
                         {label: "⬆️ Add first", onClick: () => addFirst(item.path)},
                         {label: "⬇️ Add last",onClick: () => addLast(item.path)},
@@ -87,7 +87,7 @@ export const TreeMobile = () => {
                             <span className=" dark:invert">🎵</span>{item.name}
                         </Label>
                     </li>
-                </MobileContextMenu>
+                </ContextMenuMobile>
             ))}
         </ul>
     </>

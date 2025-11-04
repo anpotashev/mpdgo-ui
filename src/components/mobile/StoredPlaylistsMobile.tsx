@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {addStoredPlaylistToPos, deleteStoredPlaylist, saveStoredPlaylist} from "@/features/wsRequestPayloads.ts";
 import {SaveIcon} from "lucide-react";
-import {MobileContextMenu} from "@/components/mobile/MobileContextMenu.tsx";
+import {ContextMenuMobile} from "@/components/mobile/ContextMenuMobile.tsx";
 
 export const StoredPlaylistsMobile = () => {
     const playlists = useSelector((state: RootState) => state.storedPlaylists.playlists );
@@ -38,7 +38,7 @@ export const StoredPlaylistsMobile = () => {
         <div className="m-3">
             <ul>
                 {playlists.map((pl, idx) => (
-                    <MobileContextMenu
+                    <ContextMenuMobile
                         items={[
                             {label: "⬆️ Add first", onClick: () => addFirst(pl.name)},
                             {label: "⬇️ Add last",onClick: () => addLast(pl.name)},
@@ -46,7 +46,7 @@ export const StoredPlaylistsMobile = () => {
 
                         ]}>
                     <li key={idx} className={"text-left"}><span className=" dark:invert">🎶</span>{pl.name}</li>
-                    </MobileContextMenu>
+                    </ContextMenuMobile>
                 ))}
             </ul>
         </div>

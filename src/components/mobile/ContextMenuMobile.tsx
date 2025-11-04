@@ -2,12 +2,14 @@ import React, {useRef, useState} from "react"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 
-interface MobileContextMenuProps {
+export interface Item { label: string; onClick: () => void }
+
+interface ContextMenuMobileProps {
     children: React.ReactNode
-    items: { label: string; onClick: () => void }[]
+    items: Item[]
 }
 
-export const MobileContextMenu: React.FC<MobileContextMenuProps> = ({ children, items }) => {
+export const ContextMenuMobile: React.FC<ContextMenuMobileProps> = ({ children, items }) => {
     const [open, setOpen] = useState(false)
     const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
     const timerRef = useRef<NodeJS.Timeout | null>(null)
@@ -44,7 +46,7 @@ export const MobileContextMenu: React.FC<MobileContextMenuProps> = ({ children, 
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
                 onTouchMove={handleTouchMove}
-                className="select-none active:opacity-80"
+                className="relative w-full h-full"
             >
                 {children}
             </div>

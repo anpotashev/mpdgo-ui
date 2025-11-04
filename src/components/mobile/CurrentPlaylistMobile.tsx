@@ -12,7 +12,7 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
-import {MobileContextMenu} from "@/components/mobile/MobileContextMenu.tsx";
+import {ContextMenuMobile, type Item} from "@/components/mobile/ContextMenuMobile.tsx";
 
 
 export const CurrentPlaylistMobile = () => {
@@ -86,7 +86,7 @@ export const CurrentPlaylistMobile = () => {
             <TableBody>
                 {items.map((item, idx) => {
 
-                        const contextMenuItems: { label: string; onClick: () => void }[] = [];
+                        const contextMenuItems: Item[] = [];
                         if (item.pos > 0) {
                             contextMenuItems.push({label: "⬆️ Move up", onClick: () => moveUp(item.pos)})
                         }
@@ -106,18 +106,18 @@ export const CurrentPlaylistMobile = () => {
                                 onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
                             >
                                 <TableCell className={tableCellClass}>
-                                    <MobileContextMenu items={contextMenuItems}>{idx + 1}</MobileContextMenu>
+                                    <ContextMenuMobile items={contextMenuItems}>{idx + 1}</ContextMenuMobile>
                                 </TableCell>
                                 <TableCell className={tableCellClass}>
-                                    <MobileContextMenu items={contextMenuItems}>{item.title ?? "-"}</MobileContextMenu>
+                                    <ContextMenuMobile items={contextMenuItems}>{item.title ?? "-"}</ContextMenuMobile>
                                 </TableCell>
                                 <TableCell className={tableCellClass}>
-                                    <MobileContextMenu items={contextMenuItems}>{item.artist ?? "-"}</MobileContextMenu>
+                                    <ContextMenuMobile items={contextMenuItems}>{item.artist ?? "-"}</ContextMenuMobile>
                                 </TableCell>
                                 <TableCell className={tableCellClass}>
-                                    <MobileContextMenu items={contextMenuItems}>{item.album ?? "-"}</MobileContextMenu></TableCell>
+                                    <ContextMenuMobile items={contextMenuItems}>{item.album ?? "-"}</ContextMenuMobile></TableCell>
                                 <TableCell className={tableCellClass}>
-                                    <MobileContextMenu items={contextMenuItems}>{formatTime(item.time)}</MobileContextMenu></TableCell>
+                                    <ContextMenuMobile items={contextMenuItems}>{formatTime(item.time)}</ContextMenuMobile></TableCell>
                             </TableRow>
                         )
                     }
