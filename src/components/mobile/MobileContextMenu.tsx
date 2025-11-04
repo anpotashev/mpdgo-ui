@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {useRef, useState} from "react"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 
@@ -9,21 +9,41 @@ interface MobileContextMenuProps {
 
 export const MobileContextMenu: React.FC<MobileContextMenuProps> = ({ children, items }) => {
     const [open, setOpen] = useState(false)
-    let touchTimer: NodeJS.Timeout
+    const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
+    const timerRef = useRef<NodeJS.Timeout | null>(null)
 
-    const handleTouchStart = () => {
-        touchTimer = setTimeout(() => setOpen(true), 500)
+    const handleTouchStart = (e: React.TouchEvent) => {
+        const touch = e.touches[0]
+        touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() }
+
+        timerRef.current = setTimeout(() => setOpen(true), 500)
     }
 
-    const handleTouchEnd = () => clearTimeout(touchTimer)
+    const handleTouchEnd = () => {
+        if (timerRef.current) clearTimeout(timerRef.current)
+        timerRef.current = null
+    }
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        const touch = e.touches[0]
+        const start = touchStartRef.current
+        if (!start) return
+
+        const dx = Math.abs(touch.clientX - start.x)
+        const dy = Math.abs(touch.clientY - start.y)
+
+        if (dx > 10 || dy > 10) {
+            if (timerRef.current) clearTimeout(timerRef.current)
+            timerRef.current = null
+        }
+    }
 
     return (
         <>
             <div
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
-                onMouseDown={handleTouchStart}
-                onMouseUp={handleTouchEnd}
+                onTouchMove={handleTouchMove}
                 className="select-none active:opacity-80"
             >
                 {children}
