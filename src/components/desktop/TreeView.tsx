@@ -32,7 +32,7 @@ const FileNode: React.FC<{ file: FileItem }> = ({file}) => {
                     source: "tree",
                     path: file.path,
                     name: file.name,
-                } as DragItem))}><span className=" dark:invert">🎵</span>{file.name}</div>
+                } as DragItem))}><span className="dark:invert grayscale">📁🎵</span>{file.name}</div>
             </ContextMenuTrigger>
         <ContextMenuContent>
             <ContextMenuItem onClick={() => dispatch(wsSend(addToPos(0, file.path)))}>Add first</ContextMenuItem>
@@ -65,7 +65,7 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
                          }
                          }
                     >
-                        {open ? "📂" : "📁"} {dir.name}
+                        <span className="dark:invert grayscale">{open ? "📂" : "📁"}</span> {dir.name}
                     </div>
                     {open &&
                         dir.children.map((child, idx) =>

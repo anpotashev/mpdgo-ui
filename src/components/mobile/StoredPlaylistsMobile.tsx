@@ -45,7 +45,7 @@ export const StoredPlaylistsMobile = () => {
                             {label: "⬇️ Delete",onClick: () => deleteStored(pl.name)},
 
                         ]}>
-                    <li key={idx} className={"text-left"}><span className=" dark:invert">🎶</span>{pl.name}</li>
+                    <li key={idx} className={"text-left"}><span className=" dark:invert grayscale">🎶</span>{pl.name}</li>
                     </ContextMenuMobile>
                 ))}
             </ul>

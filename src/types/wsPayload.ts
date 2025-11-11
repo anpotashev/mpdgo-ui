@@ -43,22 +43,3 @@ export interface WsMessage {
     success?: boolean;
     error?: string;
 }
-
-export interface ErrorEntry {
-    requestId?: string | null;
-    error: string;
-    originalType?: string;
-    originalPayload?: any;
-    timestamp: number;
-}
-
-
-export interface Output {
-    id: number;
-    name: string;
-    enabled: boolean;
-}
-
-export interface OutputPayload {
-    outputs: Output[];
-}

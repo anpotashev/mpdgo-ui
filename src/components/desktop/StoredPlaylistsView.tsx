@@ -41,7 +41,7 @@ export const StoredPlaylistsView = () => {
                                         name: pl.name,
                                     } as DragItem))
                                 }
-                            }}><span className=" dark:invert">🎶</span>{pl.name}</li>
+                            }}><span className="dark:invert grayscale">🎶</span>{pl.name}</li>
                     ))}
                 </ul>
             </div>

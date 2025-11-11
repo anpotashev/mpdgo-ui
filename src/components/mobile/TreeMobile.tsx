@@ -66,7 +66,7 @@ export const TreeMobile = () => {
                             className="text-left mb-2"
                             key={key}
                             onClick={() => goToFolder(item)}
-                        >📁<span className="truncate">{item.name}</span></Label>
+                        ><span className="dark:invert grayscale">📁</span><span className="truncate">{item.name}</span></Label>
                     </li>
                 </ContextMenuMobile>
             ))}
@@ -84,7 +84,7 @@ export const TreeMobile = () => {
                             key={key}
                             className="text-left mb-2"
                         >
-                            <span className=" dark:invert">🎵</span>{item.name}
+                            <span className="dark:invert grayscale">🎵</span>{item.name}
                         </Label>
                     </li>
                 </ContextMenuMobile>
