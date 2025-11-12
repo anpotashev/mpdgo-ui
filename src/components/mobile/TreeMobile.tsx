@@ -39,7 +39,7 @@ export const TreeMobile = () => {
                     onClick={goBack}
                 >
                     <FolderUpIcon className="size-5 flex-shrink-0"/>
-                    <span className="dark:invert truncate">{folderStack[folderStack.length - 1].name}</span>
+                    <span className="truncate">{folderStack[folderStack.length - 1].name}</span>
                 </Label>
             </ContextMenuMobile>
         }

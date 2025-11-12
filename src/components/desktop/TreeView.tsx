@@ -1,11 +1,12 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import type {RootState} from "@/store/store";
-import {useAppDispatch, useAppSelector} from "@/app/hooks";
-import {dndSlice, type DragItem} from "@/features/dnd/dndSlice";
+import {useAppSelector} from "@/app/hooks";
+import {type DragItem} from "@/features/dnd/dndSlice";
 import {ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger} from "@/components/ui/context-menu.tsx";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {addToPos, updateTree} from "@/features/wsRequestPayloads.ts";
+import {useDragLogic} from "@/hooks/useDragLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {useTreeLogic} from "@/hooks/useTreeLogic.ts";
 
 interface DirectoryItem {
     path: string;
@@ -22,29 +23,30 @@ type TreeItem = DirectoryItem | FileItem;
 
 // Компонент для файла
 const FileNode: React.FC<{ file: FileItem }> = ({file}) => {
-    const dispatch = useAppDispatch();
-    const playlistLength = useSelector((state: RootState) => state.playlist?.items?.length) ?? 0
-    
-    return<ContextMenu>
+    const {doDragStart} = useDragLogic();
+    const {addByPathToPos, currentPlaylistLength} = useCurrentPlaylistLogic();
+
+    return <ContextMenu>
         <ContextMenuTrigger>
-    <div className="ml-2 cursor-pointer"
-                onMouseDown={() => dispatch(dndSlice.actions.startDrag({
-                    source: "tree",
-                    path: file.path,
-                    name: file.name,
-                } as DragItem))}><span className="dark:invert grayscale">📁🎵</span>{file.name}</div>
-            </ContextMenuTrigger>
+            <div className="ml-2 cursor-pointer"
+                 onMouseDown={() => doDragStart({
+                     source: "tree",
+                     path: file.path,
+                     name: file.name,
+                 } as DragItem)}><span className="dark:invert grayscale">📁🎵</span>{file.name}</div>
+        </ContextMenuTrigger>
         <ContextMenuContent>
-            <ContextMenuItem onClick={() => dispatch(wsSend(addToPos(0, file.path)))}>Add first</ContextMenuItem>
-            <ContextMenuItem onClick={() => dispatch(wsSend(addToPos(playlistLength, file.path)))}>Add last</ContextMenuItem>
+            <ContextMenuItem onClick={() => addByPathToPos(file.path, 0)}>Add first</ContextMenuItem>
+            <ContextMenuItem onClick={() => addByPathToPos(file.path, currentPlaylistLength)}>Add last</ContextMenuItem>
         </ContextMenuContent>
-        </ContextMenu>;
+    </ContextMenu>;
 };
 
 // Компонент для папки
 const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
-    const dispatch = useAppDispatch();
-    const playlistLength = useSelector((state: RootState) => state.playlist?.items?.length) ?? 0
+    const {doDragStart} = useDragLogic();
+    const {addByPathToPos, currentPlaylistLength} = useCurrentPlaylistLogic();
+    const {updateByPath} = useTreeLogic();
     const [open, setOpen] = useState(false);
 
     return (
@@ -55,15 +57,13 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
                          onClick={() => setOpen(!open)}
                          onMouseDown={(e) => {
                              if (e.button == 0) {
-                                 dispatch(dndSlice.actions.startDrag({
-                                         source: "tree",
-                                         path: dir.path,
-                                         name: dir.name,
-                                     } as DragItem)
-                                 )
+                                 doDragStart({
+                                     source: "tree",
+                                     path: dir.path,
+                                     name: dir.name,
+                                 } as DragItem);
                              }
-                         }
-                         }
+                         }}
                     >
                         <span className="dark:invert grayscale">{open ? "📂" : "📁"}</span> {dir.name}
                     </div>
@@ -78,9 +78,10 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
                 </div>
             </ContextMenuTrigger>
             <ContextMenuContent>
-                <ContextMenuItem onClick={() => dispatch(wsSend(addToPos(0, dir.path)))}>Add first</ContextMenuItem>
-                <ContextMenuItem onClick={() => dispatch(wsSend(addToPos(playlistLength, dir.path)))}>Add last</ContextMenuItem>
-                <ContextMenuItem onClick={() => dispatch(wsSend(updateTree(dir.path)))}>Update</ContextMenuItem>
+                <ContextMenuItem onClick={() => addByPathToPos( dir.path, 0)}>Add first</ContextMenuItem>
+                <ContextMenuItem onClick={() => addByPathToPos(dir.path, currentPlaylistLength)}>Add
+                    last</ContextMenuItem>
+                <ContextMenuItem onClick={() => updateByPath(dir.path)}>Update</ContextMenuItem>
             </ContextMenuContent>
         </ContextMenu>
     );
