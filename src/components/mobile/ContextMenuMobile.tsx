@@ -1,5 +1,5 @@
 import React from "react"
-import {useContextMenuLogic, type Item} from "@/components/mobile/ContextMenuMobileFunctions.tsx";
+import {useContextMenuLogic, type Item} from "@/components/mobile/useContextMenuLogic.tsx";
 
 interface ContextMenuMobileProps {
     children: React.ReactNode
