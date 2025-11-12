@@ -1,4 +1,4 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "@/hooks/app.ts";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {setOutputState} from "@/features/wsRequestPayloads.ts";
 import type {Output} from "@/features/output/outputSlice.ts";

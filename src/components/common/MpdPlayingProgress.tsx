@@ -1,29 +1,17 @@
-"use client"
-
-import * as React from "react"
-
 import {Progress} from "@/components/ui/progress"
-import {seekPos} from "@/features/wsRequestPayloads.ts";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
+import {useAppSelector} from "@/hooks/app.ts";
 import clsx from "clsx"
-import {useState} from "react";
-
-const formatTime = (seconds: number): string => {
-    if (seconds < 1) {
-        return "00:00"
-    }
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-};
+import React, {useState} from "react";
+import {usePlaybackLogic} from "@/hooks/usePlaybackLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 
 export function MpdPlayingProgress() {
     const [hover, setHover] = useState<{ time: number | null; percent: number | null }>({
         time: null,
         percent: null,
     })
-    const dispatch = useAppDispatch();
+    const {doSeekPos} = usePlaybackLogic();
+    const {formatTime} = useCurrentPlaylistLogic();
     const status = useAppSelector((state) => state.status.status);
     const songPos = status?.song;
     const time = status?.time;
@@ -48,7 +36,7 @@ export function MpdPlayingProgress() {
         const rect = e.currentTarget.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const newSeconds = Math.floor((clickX / rect.width) * total);
-        dispatch(wsSend(seekPos(songPos, newSeconds)));
+        doSeekPos(songPos, newSeconds);
     };
 
     return (

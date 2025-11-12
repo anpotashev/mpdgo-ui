@@ -1,4 +1,4 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "@/hooks/app.ts";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {setConsume, setRandom, setRepeat, setSingle} from "@/features/wsRequestPayloads.ts";
 

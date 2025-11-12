@@ -1,4 +1,4 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
+import {useAppDispatch, useAppSelector} from "@/hooks/app.ts";
 import {dndSlice, type DragItem} from "@/features/dnd/dndSlice.ts";
 
 export function useDragLogic() {

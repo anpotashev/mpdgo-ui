@@ -1,12 +1,12 @@
 import React, {useState} from "react";
 import {useSelector} from "react-redux";
 import type {RootState} from "@/store/store";
-import {useAppSelector} from "@/app/hooks";
 import {type DragItem} from "@/features/dnd/dndSlice";
 import {ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger} from "@/components/ui/context-menu.tsx";
 import {useDragLogic} from "@/hooks/useDragLogic.ts";
 import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 import {useTreeLogic} from "@/hooks/useTreeLogic.ts";
+import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
 
 interface DirectoryItem {
     path: string;
@@ -90,7 +90,7 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
 // Основной компонент дерева
 export const TreeView: React.FC = () => {
     const root = useSelector((state: RootState) => state.tree.root);
-    const connected = useAppSelector((state) => state.connection.connected) ?? false;
+    const {connected} = useConnectionLogic();
     if (!connected) {
         return <>[Not Connected]</>
     }

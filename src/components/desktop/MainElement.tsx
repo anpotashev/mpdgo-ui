@@ -4,19 +4,21 @@ import {ControlPanel} from "@/components/desktop/ControlPanel.tsx";
 import {MpdDatabasePanel} from "@/components/desktop/MpdDatabasePanel.tsx";
 import {DragPreview} from "@/components/desktop/DragPreview.tsx";
 import {useDragLogic} from "@/hooks/useDragLogic.ts";
+import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
 
 export const MainElement = () => {
     const {draggingItem, doDragStop} = useDragLogic();
-
+    const {connected} = useConnectionLogic();
 
     return (
-    <div onMouseUp={doDragStop}
-         className={draggingItem?.source && "cursor-disabled cursor-grabbing"}>
-        <MpdMenuBar/>
-        <MpdPlayingProgress/>
-        <ControlPanel/>
-        <MpdDatabasePanel/>
-        <DragPreview/>
-    </div>
+        <div onMouseUp={doDragStop}
+             className={draggingItem?.source && "cursor-disabled cursor-grabbing"}>
+            <MpdMenuBar/>
+            {connected && <><MpdPlayingProgress/>
+                <ControlPanel/>
+                <MpdDatabasePanel/>
+                <DragPreview/>
+            </>}
+        </div>
     )
 }

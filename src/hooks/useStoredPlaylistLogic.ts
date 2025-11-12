@@ -1,4 +1,4 @@
-import {useAppDispatch} from "@/app/hooks.ts";
+import {useAppDispatch} from "@/hooks/app.ts";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {deleteStoredPlaylist, saveStoredPlaylist} from "@/features/wsRequestPayloads.ts";
 import {useSelector} from "react-redux";
