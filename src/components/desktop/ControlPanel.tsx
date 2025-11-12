@@ -1,24 +1,18 @@
 import {Button} from "@/components/ui/button.tsx";
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-
-import {
-    clearCurrentPlaylist, deleteByPos, deleteStoredPlaylist, next, pause, play, prev, shuffleCurrentPlaylist, stop
-} from "@/features/wsRequestPayloads.ts";
-import {dndSlice} from "@/features/dnd/dndSlice.ts";
+import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
+import {usePlaybackLogic} from "@/components/common/usePlaybackLogic.ts";
+import {useDragLogic} from "@/components/common/useDragLogic.ts";
+import {useStoredPlaylistLogic} from "@/components/common/useStoredPlaylistLogic.ts";
 
 export const ControlPanel = () => {
-    const dispatch = useAppDispatch();
-    const status = useAppSelector((state) => state.status.status ?? null);
-    const draggingItem = useAppSelector((state) => state.dnd.draggingItem);
-    const items = useAppSelector(state => state.playlist.items) ?? [];
-    const shuffleEnabled = !draggingItem && items.length > 0;
+    const {clear, shuffle, deleteItem, items, nextPrevPauseStopEnabled, playEnabled, clearAndShuffleEnabled} = useCurrentPlaylistLogic();
+    const {doPrev, doPlay, doPause, doStop, doNext} = usePlaybackLogic();
+    const {doDragStop,draggingItem} = useDragLogic();
+    const {deleteStoredByName} = useStoredPlaylistLogic()
+    const playbackEnabled = !draggingItem;
+    const shuffleEnabled = playbackEnabled && clearAndShuffleEnabled;
     const clearEnabled = ((!draggingItem || draggingItem.source === "playlist") && items.length > 0) || (draggingItem && draggingItem.source === "stored_playlist");
-    const stopEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
-    const nextPrevEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
-    const playEnabled = !draggingItem && shuffleEnabled && (status?.state === "pause" || status?.state === "stop");
-    const pauseEnabled = !draggingItem && (status?.state === "play" || status?.state === "pause");
 
     const buttonClass = "rounded-full " +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
@@ -27,31 +21,31 @@ export const ControlPanel = () => {
     function deleteTrack() {
         if (draggingItem) {
             if (draggingItem.source === "playlist") {
-                dispatch(wsSend(deleteByPos(draggingItem.pos!)));
+                deleteItem(draggingItem.pos!)
             }
             if (draggingItem.source === "stored_playlist") {
-                dispatch(wsSend(deleteStoredPlaylist(draggingItem.name!)))
+                deleteStoredByName(draggingItem.name!);
             }
         }
-        dispatch(dndSlice.actions.stopDrag());
+        doDragStop();
     }
 
     return (
         <div className={"m-1"}>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(clearCurrentPlaylist()))}
+            <Button className={buttonClass} onClick={clear}
                     disabled={!clearEnabled} onMouseUp={deleteTrack}><TrashIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(shuffleCurrentPlaylist()))}
+            <Button className={buttonClass} onClick={shuffle}
                     disabled={!shuffleEnabled}><ShuffleIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(prev()))}
-                    disabled={!nextPrevEnabled}><SkipBackIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(play()))}
-                    disabled={!playEnabled}><PlayIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(pause()))}
-                    disabled={!pauseEnabled}><PauseIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(stop()))}
-                    disabled={!stopEnabled}><SquareIcon/></Button>
-            <Button className={buttonClass} onClick={() => dispatch(wsSend(next()))}
-                    disabled={!nextPrevEnabled}><SkipForwardIcon/></Button>
+            <Button className={buttonClass} onClick={doPrev}
+                    disabled={!nextPrevPauseStopEnabled || !playbackEnabled}><SkipBackIcon/></Button>
+            <Button className={buttonClass} onClick={doPlay}
+                    disabled={!playEnabled || !playbackEnabled}><PlayIcon/></Button>
+            <Button className={buttonClass} onClick={doPause}
+                    disabled={!nextPrevPauseStopEnabled || !playbackEnabled}><PauseIcon/></Button>
+            <Button className={buttonClass} onClick={doStop}
+                    disabled={!nextPrevPauseStopEnabled || !playbackEnabled}><SquareIcon/></Button>
+            <Button className={buttonClass} onClick={doNext}
+                    disabled={!nextPrevPauseStopEnabled || !playbackEnabled}><SkipForwardIcon/></Button>
         </div>
     )
 }

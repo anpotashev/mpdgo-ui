@@ -1,21 +1,12 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {Button} from "@/components/ui/button.tsx";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {
-    next,
-    pause,
-    play,
-    prev,
-    stop
-} from "@/features/wsRequestPayloads.ts";
 import {PauseIcon, PlayIcon, SkipBackIcon, SkipForwardIcon, SquareIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
+import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
+import {usePlaybackLogic} from "@/components/common/usePlaybackLogic.ts";
 
 export const PlaybackControlMobile = () => {
-    const dispatch = useAppDispatch();
-    const status = useAppSelector((state) => state.status.status ?? null);
-    const nextPrevPauseStopEnabled = status?.state === "play" || status?.state === "pause";
-    const playEnabled = status?.state === "pause" || status?.state === "stop";
+    const {nextPrevPauseStopEnabled, playEnabled} = useCurrentPlaylistLogic();
+    const {doPrev, doPlay, doPause, doStop, doNext} = usePlaybackLogic();
 
     const buttonClass = "rounded-full w-full justify-start" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
@@ -23,15 +14,15 @@ export const PlaybackControlMobile = () => {
 
     return <div className="flex flex-col space-y-2">
         {nextPrevPauseStopEnabled && <MpdPlayingProgress/>}
-        <Button className={buttonClass} onClick={() => dispatch(wsSend(prev()))}
+        <Button className={buttonClass} onClick={doPrev}
                 disabled={!nextPrevPauseStopEnabled}><SkipBackIcon/>Previous</Button>
-        <Button className={buttonClass} onClick={() => dispatch(wsSend(play()))}
+        <Button className={buttonClass} onClick={doPlay}
                 disabled={!playEnabled}><PlayIcon/>Play</Button>
-        <Button className={buttonClass} onClick={() => dispatch(wsSend(pause()))}
+        <Button className={buttonClass} onClick={doPause}
                 disabled={!nextPrevPauseStopEnabled}><PauseIcon/>Pause</Button>
-        <Button className={buttonClass} onClick={() => dispatch(wsSend(stop()))}
+        <Button className={buttonClass} onClick={doStop}
                 disabled={!nextPrevPauseStopEnabled}><SquareIcon/>Stop</Button>
-        <Button className={buttonClass} onClick={() => dispatch(wsSend(next()))}
+        <Button className={buttonClass} onClick={doNext}
                 disabled={!nextPrevPauseStopEnabled}><SkipForwardIcon/>Next</Button>
     </div>
 }
