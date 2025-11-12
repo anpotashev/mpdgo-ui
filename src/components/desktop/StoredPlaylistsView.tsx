@@ -1,18 +1,17 @@
-import {useSelector} from "react-redux";
-import type {RootState} from "@/store/store.ts";
-import {useAppDispatch} from "@/app/hooks.ts";
-import {dndSlice, type DragItem} from "@/features/dnd/dndSlice.ts";
+import {type DragItem} from "@/features/dnd/dndSlice.ts";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useState} from "react";
 import {SaveIcon} from "lucide-react";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {saveStoredPlaylist} from "@/features/wsRequestPayloads.ts";
+import {useStoredPlaylistLogic} from "@/components/common/useStoredPlaylistLogic.ts";
+import {useDragLogic} from "@/components/common/useDragLogic.ts";
+import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
 
 export const StoredPlaylistsView = () => {
-    const playlists = useSelector((state: RootState) => state.storedPlaylists.playlists );
-    const currentPlaylistIsEmpty = useSelector((state: RootState) => (state.playlist?.items?.length ?? 0) == 0);
-    const dispatch = useAppDispatch();
+    const {saveCurrentAsStored, storedPlaylists} = useStoredPlaylistLogic();
+    const {doDragStart} = useDragLogic();
+    const {items} = useCurrentPlaylistLogic();
+    const currentPlaylistIsEmpty = items.length == 0;
     const [playlistName, setPlaylistName] = useState("");
 
     return (
@@ -27,19 +26,19 @@ export const StoredPlaylistsView = () => {
                 className={"rounded-full " +
                 "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
                 "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white"}
-                onClick={() => dispatch(wsSend(saveStoredPlaylist(playlistName)))}
+                onClick={() => saveCurrentAsStored(playlistName)}
             ><SaveIcon/></Button>
             </div>
             <div className="m-3">
                 <ul>
-                    {playlists.map((pl, idx) => (
+                    {storedPlaylists.map((pl, idx) => (
                         <li key={idx} className={"text-left"}
                             onMouseDown={e => {
                                 if (e.button == 0) {
-                                    dispatch(dndSlice.actions.startDrag({
+                                    doDragStart({
                                         source: "stored_playlist",
                                         name: pl.name,
-                                    } as DragItem))
+                                    } as DragItem)
                                 }
                             }}><span className="dark:invert grayscale">🎶</span>{pl.name}</li>
                     ))}

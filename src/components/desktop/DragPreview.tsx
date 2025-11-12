@@ -1,18 +1,17 @@
 import { createPortal } from "react-dom";
-import {useSelector} from "react-redux";
-import type {RootState} from "@/store/store.ts";
 import {useEffect, useState} from "react";
+import {useDragLogic} from "@/components/common/useDragLogic.ts";
 
 export const DragPreview= () => {
     const [coords, setCoords] = useState({ x: 0, y: 0 });
-    const dragItem = useSelector((state: RootState) => state.dnd.draggingItem);
+    const {draggingItem} = useDragLogic();
     useEffect(() => {
         const onMove = (e: MouseEvent) => setCoords({ x: e.clientX, y: e.clientY });
         window.addEventListener("mousemove", onMove);
         return () => window.removeEventListener("mousemove", onMove);
     }, []);
 
-    if (!dragItem || !dragItem.name) return null;
+    if (!draggingItem || !draggingItem.name) return null;
     return createPortal(
         <div
             style={{
@@ -24,7 +23,7 @@ export const DragPreview= () => {
             }}
             className={`px-2 py-1 rounded text-sm font-medium text-blue bg-white dark:bg-blue-600 dark:text-white`}
         >
-            {dragItem.name}
+            {draggingItem.name}
         </div>,
         document.body
     );

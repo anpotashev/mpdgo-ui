@@ -1,10 +1,14 @@
 import {useAppDispatch} from "@/app/hooks.ts";
 import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {deleteStoredPlaylist} from "@/features/wsRequestPayloads.ts";
+import {deleteStoredPlaylist, saveStoredPlaylist} from "@/features/wsRequestPayloads.ts";
+import {useSelector} from "react-redux";
+import type {RootState} from "@/store/store.ts";
 
 export function useStoredPlaylistLogic() {
     const dispatch = useAppDispatch();
     const deleteStoredByName = (name: string) => dispatch(wsSend(deleteStoredPlaylist(name)));
+    const saveCurrentAsStored = (name: string) => dispatch(wsSend(saveStoredPlaylist(name)));
+    const storedPlaylists = useSelector((state: RootState) => state.storedPlaylists.playlists );
 
-    return {deleteStoredByName};
+    return {deleteStoredByName, saveCurrentAsStored, storedPlaylists};
 }
