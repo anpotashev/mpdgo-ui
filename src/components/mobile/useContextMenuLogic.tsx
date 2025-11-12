@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button.tsx";
 
 export interface Item { label: string; onClick: () => void }
 
-export function contextMenuLogic() {
+export function useContextMenuLogic() {
     const [open, setOpen] = useState(false)
     const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null)
     const timerRef = useRef<NodeJS.Timeout | null>(null)

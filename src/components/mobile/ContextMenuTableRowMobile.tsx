@@ -1,6 +1,6 @@
 import React from "react"
 import { TableRow} from "@/components/ui/table.tsx";
-import {contextMenuLogic, type Item} from "@/components/mobile/ContextMenuMobileFunctions.tsx";
+import {useContextMenuLogic, type Item} from "@/components/mobile/useContextMenuLogic.tsx";
 
 export interface ContextMenuTableRowProps
     extends React.ComponentPropsWithoutRef<"tr"> {
@@ -13,7 +13,7 @@ export const ContextMenuTableRowMobile: React.FC<ContextMenuTableRowProps> = ({
                                                                                   items,
                                                                                   ...props
                                                                               }) => {
-    const {handleTouchStart, handleTouchEnd, handleTouchMove, printMenu} = contextMenuLogic()
+    const {handleTouchStart, handleTouchEnd, handleTouchMove, printMenu} = useContextMenuLogic()
     return (
         <>
             <TableRow

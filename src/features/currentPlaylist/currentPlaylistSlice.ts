@@ -1,6 +1,6 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
-interface PlaylistItem {
+export interface PlaylistItem {
     file: string;
     time: number;
     artist?: string;

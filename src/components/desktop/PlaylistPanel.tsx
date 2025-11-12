@@ -1,8 +1,4 @@
 import React from "react";
-import {useAppDispatch, useAppSelector} from "@/app/hooks";
-import {wsSend} from "@/store/middleware/wsMiddleware";
-import {dndSlice} from "@/features/dnd/dndSlice";
-// import {addToPos, moveItemToPos, playPos} from "@/features/wsRequestPayloads";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
 import {
     ContextMenu,
@@ -11,12 +7,17 @@ import {
     ContextMenuSeparator,
     ContextMenuTrigger
 } from "@/components/ui/context-menu";
-import {addStoredPlaylistToPos, addToPos, moveItemToPos, playPos} from "@/features/wsRequestPayloads.ts";
 import {ScrollArea} from "@/components/ui/scroll-area";
+import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
+import {useDragLogic} from "@/components/common/useDragLogic.ts";
 
 type Column = "Id" | "Title" | "Artist" | "Album" | "Time"
 
 export const PlaylistPanel: React.FC = () => {
+
+        const {addByPathToPos, moveFromPosToPos, addStoredToPos, playItem, items, activePos, playing, formatTime} = useCurrentPlaylistLogic();
+        const {doDragStop, doDragStart, draggingItem} = useDragLogic();
+
         // Столбец, у которого вызвали контекстное меню
         const [currentColumn, setCurrentColumn] = React.useState<Column | null>(null);
         // видимость и ширины столбцов
@@ -51,27 +52,21 @@ export const PlaylistPanel: React.FC = () => {
             }))
         }
 
-        const items = useAppSelector(state => state.playlist.items) ?? [];
-        const draggingItem = useAppSelector(state => state.dnd.draggingItem) ?? null;
-        const playing = useAppSelector(state => state.status?.status?.state === "play");
-        const activePos = useAppSelector(state => state.status.status?.song);
-
-        const dispatch = useAppDispatch();
         const handleMouseUp = (pos: number) => {
             if (draggingItem?.source === "tree") {
                 if (draggingItem.path !== null) {
-                    dispatch(wsSend(addToPos(pos, draggingItem.path)));
+                    addByPathToPos(draggingItem.path, pos);
                 }
             }
             if (draggingItem?.source === "playlist") {
                 if (draggingItem.pos !== null && draggingItem.pos !== pos) {
-                    dispatch(wsSend(moveItemToPos(draggingItem.pos, pos)));
+                    moveFromPosToPos(draggingItem.pos, pos);
                 }
             }
             if (draggingItem?.source === "stored_playlist" && draggingItem.name) {
-                dispatch(wsSend(addStoredPlaylistToPos(pos, draggingItem.name)))
+                addStoredToPos(draggingItem.name, pos);
             }
-            dispatch(dndSlice.actions.stopDrag());
+            doDragStop();
         }
         return (
             <ScrollArea className="w-full h-full" onMouseUp={() => handleMouseUp(items.length ? items.length : 0)}>
@@ -129,14 +124,14 @@ export const PlaylistPanel: React.FC = () => {
                                           e.stopPropagation();
                                           handleMouseUp(item.pos);
                                       }}
-                                      onMouseDown={() => dispatch(dndSlice.actions.startDrag({
+                                      onMouseDown={() => doDragStart({
                                           id: null,
                                           name: item.title ?? null,
                                           path: null,
                                           source: "playlist",
                                           pos: item.pos
-                                      }))}
-                                      onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
+                                      })}
+                                      onDoubleClick={() => playItem(item)}
                             >
                                 {columns.Id.visible &&
                                     <TableCell className="text-left px-1 py-0.5 border-b">{idx + 1}</TableCell>}
@@ -160,11 +155,4 @@ export const PlaylistPanel: React.FC = () => {
         );
     }
 ;
-
-// Вспомогательная функция для форматирования секунд в MM:SS
-function formatTime(seconds: number) {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-}
 

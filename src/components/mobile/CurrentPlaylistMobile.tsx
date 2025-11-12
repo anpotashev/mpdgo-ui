@@ -1,74 +1,52 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table.tsx";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {
-    clearCurrentPlaylist, deleteByPos, moveItemToPos, next,
-    pause,
-    play,
-    playPos,
-    prev,
-    shuffleCurrentPlaylist, stop
-} from "@/features/wsRequestPayloads.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
 import {ContextMenuTableRowMobile} from "@/components/mobile/ContextMenuTableRowMobile.tsx";
-import type {Item} from "@/components/mobile/ContextMenuMobileFunctions.tsx";
+import type {Item} from "@/components/mobile/useContextMenuLogic.tsx";
+import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
+import {usePlaybackLogic} from "@/components/common/usePlaybackLogic.ts";
 
 
 const CurrentPlaylistMobile = () => {
 
-    const items = useAppSelector(state => state.playlist.items) ?? [];
-
-    const playing = useAppSelector(state => state.status?.status?.state === "play");
-    const activePos = useAppSelector(state => state.status.status?.song);
-
-    const dispatch = useAppDispatch();
-
-    const clearAndShuffleEnabled = items.length > 0
-    const status = useAppSelector((state) => state.status.status ?? null);
-    const nextPrevPauseStopEnabled = status?.state === "play" || status?.state === "pause";
-    const playEnabled = status?.state === "pause" || status?.state === "stop";
-
-    const formatTime = (seconds: number) => {
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
-    }
-
+    const {shuffle,
+        deleteItem,
+        moveDown,
+        moveUp,
+        formatTime,
+        playItem,
+        clear,
+        items,
+        playing,
+        activePos,
+        nextPrevPauseStopEnabled,
+        clearAndShuffleEnabled,
+        playEnabled} = useCurrentPlaylistLogic();
+    const {doPrev, doPlay, doPause, doStop, doNext} = usePlaybackLogic();
     const buttonClass = "rounded-full" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
 
     const tableCellClass="text-left text-xs px-1 py-0.5 border-b align-top break-words whitespace-normal";
-    const moveUp = (id: number) => {
-        dispatch(wsSend(moveItemToPos(id, id - 1)));
-    }
-    const moveDown = (id: number) => {
-        dispatch(wsSend(moveItemToPos(id, id + 1)));
-    }
-    const deleteItem = (id: number) => {
-        dispatch(wsSend(deleteByPos(id)));
-    }
-
 
     return <>
         {clearAndShuffleEnabled && <>
             {nextPrevPauseStopEnabled && <MpdPlayingProgress/>}
             <div className="whitespace-nowrap text-left">
                 <Button className={buttonClass}
-                        onClick={() => dispatch(wsSend(clearCurrentPlaylist()))}><TrashIcon/></Button>
+                        onClick={clear}><TrashIcon/></Button>
                 <Button className={buttonClass}
-                        onClick={() => dispatch(wsSend(shuffleCurrentPlaylist()))}><ShuffleIcon/></Button>
-                <Button className={buttonClass} onClick={() => dispatch(wsSend(prev()))}
+                        onClick={shuffle}><ShuffleIcon/></Button>
+                <Button className={buttonClass} onClick={doPrev}
                         disabled={!nextPrevPauseStopEnabled}><SkipBackIcon/></Button>
-                <Button className={buttonClass} onClick={() => dispatch(wsSend(play()))}
+                <Button className={buttonClass} onClick={doPlay}
                         disabled={!playEnabled}><PlayIcon/></Button>
-                <Button className={buttonClass} onClick={() => dispatch(wsSend(pause()))}
+                <Button className={buttonClass} onClick={doPause}
                         disabled={!nextPrevPauseStopEnabled}><PauseIcon/></Button>
-                <Button className={buttonClass} onClick={() => dispatch(wsSend(stop()))}
+                <Button className={buttonClass} onClick={doStop}
                         disabled={!nextPrevPauseStopEnabled}><SquareIcon/></Button>
-                <Button className={buttonClass} onClick={() => dispatch(wsSend(next()))}
+                <Button className={buttonClass} onClick={doNext}
                         disabled={!nextPrevPauseStopEnabled}><SkipForwardIcon/></Button>
             </div>
         </>}
@@ -104,7 +82,7 @@ const CurrentPlaylistMobile = () => {
                                 className={`${
                                     item.pos === activePos ? (playing ? "text-blue-400" : "text-gray-400") : ""
                                 }`}
-                                onDoubleClick={() => dispatch(wsSend(playPos(item.pos)))}
+                                onDoubleClick={() => playItem(item)}
                             >
                                 <TableCell className={tableCellClass}>{idx + 1}</TableCell>
                                 <TableCell className={tableCellClass}>{item.title ?? "-"}</TableCell>
