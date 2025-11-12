@@ -7,7 +7,6 @@ import {
 import {ModeToggle} from "@/components/desktop/ModeToggle.tsx";
 import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {
-    setConnectionState,
     setConsume,
     setOutputState,
     setRandom,
@@ -21,9 +20,10 @@ import {
     SettingsIcon, SpeakerIcon
 } from 'lucide-react'
 import {Label} from "@/components/ui/label.tsx";
+import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
 
 export const MpdMenuBar = () => {
-    const connected = useAppSelector((state) => state.connection.connected) ?? false;
+    const {changeConnectionStatus, connected} = useConnectionLogic();
     const status = useAppSelector((state) => state.status?.status);
     const outputs = useAppSelector(state => state.output.outputs) ?? [];
     const randomEnabled = status?.random ?? false;
@@ -36,11 +36,10 @@ export const MpdMenuBar = () => {
         <Menubar>
             <Label className={"text-blue-400"}><Music4Icon/>MPD Client</Label>
             <MenubarMenu>
-                {/*<Label style={styles.logo}></Label>*/}
                 <MenubarTrigger><PlugIcon/>Connection</MenubarTrigger>
                 <MenubarContent>
                     <MenubarCheckboxItem
-                        onClick={() => dispatch(wsSend(setConnectionState(!connected)))}
+                        onClick={changeConnectionStatus}
                         checked={connected}>Connected
                     </MenubarCheckboxItem>
                 </MenubarContent>

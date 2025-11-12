@@ -1,8 +1,8 @@
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, SkipBackIcon, SkipForwardIcon, SquareIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
-import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
-import {usePlaybackLogic} from "@/components/common/usePlaybackLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {usePlaybackLogic} from "@/hooks/usePlaybackLogic.ts";
 
 export const PlaybackControlMobile = () => {
     const {nextPrevPauseStopEnabled, playEnabled} = useCurrentPlaylistLogic();

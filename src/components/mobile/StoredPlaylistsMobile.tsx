@@ -3,8 +3,8 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {SaveIcon} from "lucide-react";
 import {ContextMenuMobile} from "@/components/mobile/ContextMenuMobile.tsx";
-import {useStoredPlaylistLogic} from "@/components/common/useStoredPlaylistLogic.ts";
-import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
+import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 
 export const StoredPlaylistsMobile = () => {
     const { saveCurrentAsStored,deleteStoredByName, storedPlaylists } = useStoredPlaylistLogic();

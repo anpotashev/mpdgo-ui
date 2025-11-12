@@ -8,8 +8,8 @@ import {
     ContextMenuTrigger
 } from "@/components/ui/context-menu";
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
-import {useDragLogic} from "@/components/common/useDragLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {useDragLogic} from "@/hooks/useDragLogic.ts";
 
 type Column = "Id" | "Title" | "Artist" | "Album" | "Time"
 

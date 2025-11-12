@@ -1,15 +1,12 @@
 import {CustomCheckboxItem} from "@/components/mobile/CustomCheckboxItem.tsx";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {setConnectionState} from "@/features/wsRequestPayloads.ts";
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
+import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
 
 export const ConnectionMobile = () => {
-    const connected = useAppSelector(state => state.connection.connected ?? false);
-    const dispatch = useAppDispatch();
+    const {changeConnectionStatus, connected} = useConnectionLogic();
     return <CustomCheckboxItem
         enabledMessage={"Disconnect from the MPD server"}
         disabledMessage={"Connect to the MPD server"}
-        onClick={() => dispatch(wsSend(setConnectionState(!connected)))}
+        onClick={changeConnectionStatus}
         enabled={connected}
     />;
 }

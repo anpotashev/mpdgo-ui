@@ -1,9 +1,9 @@
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
-import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
-import {usePlaybackLogic} from "@/components/common/usePlaybackLogic.ts";
-import {useDragLogic} from "@/components/common/useDragLogic.ts";
-import {useStoredPlaylistLogic} from "@/components/common/useStoredPlaylistLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {usePlaybackLogic} from "@/hooks/usePlaybackLogic.ts";
+import {useDragLogic} from "@/hooks/useDragLogic.ts";
+import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
 
 export const ControlPanel = () => {
     const {clear, shuffle, deleteItem, items, nextPrevPauseStopEnabled, playEnabled, clearAndShuffleEnabled} = useCurrentPlaylistLogic();

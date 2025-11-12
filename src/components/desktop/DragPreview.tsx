@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import {useEffect, useState} from "react";
-import {useDragLogic} from "@/components/common/useDragLogic.ts";
+import {useDragLogic} from "@/hooks/useDragLogic.ts";
 
 export const DragPreview= () => {
     const [coords, setCoords] = useState({ x: 0, y: 0 });

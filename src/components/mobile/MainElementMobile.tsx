@@ -1,6 +1,5 @@
 import {Accordion, AccordionTrigger} from "@/components/ui/accordion.tsx";
 import {AccordionContent, AccordionItem} from "@radix-ui/react-accordion";
-import {useAppSelector} from "@/app/hooks.ts";
 import {SettingsMobile} from "@/components/mobile/SettingsMobile.tsx";
 import {ConnectionMobile} from "@/components/mobile/ConnectionMobile.tsx";
 import {ModeToggleMobile} from "@/components/mobile/ModeToggleMobile.tsx";
@@ -19,13 +18,17 @@ import {PlaybackControlMobile} from "@/components/mobile/PlaybackControlMobile.t
 import {StoredPlaylistsMobile} from "@/components/mobile/StoredPlaylistsMobile.tsx";
 import {TreeMobile} from "@/components/mobile/TreeMobile.tsx";
 import CurrentPlaylistMobile from "@/components/mobile/CurrentPlaylistMobile.tsx";
-import {useSelector} from "react-redux";
-import type {RootState} from "@/store/store.ts";
+import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
 
 export const MainElementMobile = () => {
-    const connected = useAppSelector(state => state.connection.connected ?? false);
+    const {connected} = useConnectionLogic();
+    const {items} = useCurrentPlaylistLogic();
+    const {storedPlaylists} = useStoredPlaylistLogic();
+    const currentPlaylistIsEmpty = items?.length === 0;
+    const storedPlaylistsIsEmpty = storedPlaylists?.length === 0;
 
-    const currentPlaylistIsEmpty = useSelector((state: RootState) => (state.playlist?.items?.length) ?? 0) === 0
     return <>
         <Accordion type="single" collapsible>
             <AccordionItem value="Theme">
@@ -61,10 +64,11 @@ export const MainElementMobile = () => {
                     <AccordionTrigger><Label><FolderTreeIcon className="size-5"/>Tree</Label></AccordionTrigger>
                     <AccordionContent><TreeMobile/></AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="Stored playlists">
+                {(!currentPlaylistIsEmpty || !storedPlaylistsIsEmpty) &&
+                    <AccordionItem value="Stored playlists">
                     <AccordionTrigger><Label><FileMusicIcon className="size-5"/>Stored playlists</Label></AccordionTrigger>
                     <AccordionContent><StoredPlaylistsMobile/></AccordionContent>
-                </AccordionItem>
+                </AccordionItem>}
             </>}
         </Accordion>
     </>;

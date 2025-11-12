@@ -4,8 +4,8 @@ import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareI
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
 import {ContextMenuTableRowMobile} from "@/components/mobile/ContextMenuTableRowMobile.tsx";
 import type {Item} from "@/components/mobile/useContextMenuLogic.tsx";
-import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
-import {usePlaybackLogic} from "@/components/common/usePlaybackLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {usePlaybackLogic} from "@/hooks/usePlaybackLogic.ts";
 
 
 const CurrentPlaylistMobile = () => {

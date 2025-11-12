@@ -3,9 +3,9 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useState} from "react";
 import {SaveIcon} from "lucide-react";
-import {useStoredPlaylistLogic} from "@/components/common/useStoredPlaylistLogic.ts";
-import {useDragLogic} from "@/components/common/useDragLogic.ts";
-import {useCurrentPlaylistLogic} from "@/components/common/useCurrentPlaylistLogic.ts";
+import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
+import {useDragLogic} from "@/hooks/useDragLogic.ts";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 
 export const StoredPlaylistsView = () => {
     const {saveCurrentAsStored, storedPlaylists} = useStoredPlaylistLogic();
