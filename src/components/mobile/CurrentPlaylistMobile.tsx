@@ -12,7 +12,8 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, ShuffleIcon, SkipBackIcon, SkipForwardIcon, SquareIcon, TrashIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
-import {ContextMenuTableRowMobile, type Item} from "@/components/mobile/ContextMenuTableRowMobile.tsx";
+import {ContextMenuTableRowMobile} from "@/components/mobile/ContextMenuTableRowMobile.tsx";
+import type {Item} from "@/components/mobile/ContextMenuMobileFunctions.tsx";
 
 
 const CurrentPlaylistMobile = () => {
