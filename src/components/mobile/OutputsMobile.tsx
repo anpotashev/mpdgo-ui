@@ -1,17 +1,14 @@
 import {CustomCheckboxItem} from "@/components/mobile/CustomCheckboxItem.tsx";
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {setOutputState} from "@/features/wsRequestPayloads.ts";
+import {useOutputsLogic} from "@/hooks/useOutputsLogic.ts";
 
 export const OutputsMobile = () => {
-    const outputs = useAppSelector(state => state.output.outputs) ?? [];
-    const dispatch = useAppDispatch();
+    const {changeOutputState, outputs} = useOutputsLogic();
     return <>
         {outputs?.map((output, key) => (
             <CustomCheckboxItem
                 enabledMessage={"Disable " + output.name}
                 disabledMessage={"Enable " + output.name}
-                onClick={() => dispatch(wsSend(setOutputState(output.id, !output.enabled)))}
+                onClick={() => changeOutputState(output)}
                 enabled={output.enabled}
                 key = {key}
             />

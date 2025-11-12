@@ -1,18 +1,14 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
 import {Label} from "@/components/ui/label.tsx";
 import {useState} from "react";
 import type {DirectoryItem, TreeItem} from "@/features/tree/treeSlice.ts";
 import {FolderUpIcon} from "lucide-react";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {addToPos, updateTree} from "@/features/wsRequestPayloads.ts";
-import {useSelector} from "react-redux";
-import type {RootState} from "@/store/store.ts";
 import {ContextMenuMobile} from "@/components/mobile/ContextMenuMobile.tsx";
+import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {useTreeLogic} from "@/hooks/useTreeLogic.ts";
 
 export const TreeMobile = () => {
-    const rootFolder = useAppSelector(state => state.tree.root);
-    const playlistLength = useSelector((state: RootState) => state.playlist?.items?.length) ?? 0
-    const dispatch = useAppDispatch();
+    const {addByPathToPos, currentPlaylistLength} = useCurrentPlaylistLogic();
+    const {rootFolder, updateFull, updateByPath} = useTreeLogic();
     const [folderStack, setFolderStack] = useState<DirectoryItem[]>([rootFolder]);
     const currentFolder = folderStack[folderStack.length - 1];
 
@@ -24,13 +20,10 @@ export const TreeMobile = () => {
         }
     };
 
-    const goToFolder = (folder: DirectoryItem) => {
-        setFolderStack((prev) => [...prev, folder]);
-    };
+    const goToFolder = (folder: DirectoryItem) =>  setFolderStack((prev) => [...prev, folder]);
 
-    const  addFirst = (path: string)=>  dispatch(wsSend(addToPos(0, path)));
-    const  addLast = (path: string)=>  dispatch(wsSend(addToPos(playlistLength, path)));
-    const  updateDb = (path: string)=>  dispatch(wsSend(updateTree(path)));
+    const  addFirst = (path: string)=>  addByPathToPos( path, 0);
+    const  addLast = (path: string)=>  addByPathToPos(path, currentPlaylistLength);
 
     return <>
         {folderStack.length > 1 &&
@@ -38,8 +31,8 @@ export const TreeMobile = () => {
                 items={[
                     {label: "⬆️ Add first", onClick: () => addFirst(folderStack[folderStack.length - 1].path)},
                     {label: "⬇️ Add last",onClick: () => addLast( folderStack[folderStack.length - 1].path)},
-                    {label: "🔄 Update the tree (this folder)", onClick: () => updateDb(folderStack[folderStack.length - 1].path)},
-                    {label: "🔄 Update the tree (full)", onClick: () => updateDb("")},
+                    {label: "🔄 Update the tree (this folder)", onClick: () => updateByPath(folderStack[folderStack.length - 1].path)},
+                    {label: "🔄 Update the tree (full)", onClick: updateFull},
                 ]}>
                 <Label
                     className="mb-2 text-left"
@@ -57,8 +50,8 @@ export const TreeMobile = () => {
                     items={[
                         {label: "⬆️ Add first", onClick: () => addFirst(item.path)},
                         {label: "⬇️ Add last",onClick: () => addLast(item.path)},
-                        {label: "🔄 Update the tree", onClick: () => updateDb(item.path)},
-                        {label: "🔄 Update the tree (full)", onClick: () => updateDb("")},
+                        {label: "🔄 Update the tree", onClick: () => updateByPath(item.path)},
+                        {label: "🔄 Update the tree (full)", onClick: updateFull},
                     ]}>
                     <li>
 
@@ -77,7 +70,7 @@ export const TreeMobile = () => {
                     items={[
                         {label: "⬆️ Add first", onClick: () => addFirst(item.path)},
                         {label: "⬇️ Add last",onClick: () => addLast(item.path)},
-                        {label: "🔄 Update the tree (full)", onClick: () => updateDb("")},
+                        {label: "🔄 Update the tree (full)", onClick: updateFull},
                     ]}>
                     <li>
                         <Label

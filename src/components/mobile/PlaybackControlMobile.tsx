@@ -1,12 +1,10 @@
 import {Button} from "@/components/ui/button.tsx";
 import {PauseIcon, PlayIcon, SkipBackIcon, SkipForwardIcon, SquareIcon} from "lucide-react";
 import {MpdPlayingProgress} from "@/components/common/MpdPlayingProgress.tsx";
-import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 import {usePlaybackLogic} from "@/hooks/usePlaybackLogic.ts";
 
 export const PlaybackControlMobile = () => {
-    const {nextPrevPauseStopEnabled, playEnabled} = useCurrentPlaylistLogic();
-    const {doPrev, doPlay, doPause, doStop, doNext} = usePlaybackLogic();
+    const {doPrev, doPlay, doPause, doStop, doNext, nextPrevPauseStopEnabled, playEnabled} = usePlaybackLogic();
 
     const buttonClass = "rounded-full w-full justify-start" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +

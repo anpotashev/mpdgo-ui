@@ -5,15 +5,6 @@ import {
     MenubarTrigger,
 } from "@/components/ui/menubar"
 import {ModeToggle} from "@/components/desktop/ModeToggle.tsx";
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
-import {
-    setConsume,
-    setOutputState,
-    setRandom,
-    setRepeat,
-    setSingle
-} from "@/features/wsRequestPayloads.ts";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
 import {
     Music4Icon,
     PlugIcon,
@@ -21,16 +12,13 @@ import {
 } from 'lucide-react'
 import {Label} from "@/components/ui/label.tsx";
 import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
+import {useOutputsLogic} from "@/hooks/useOutputsLogic.ts";
+import {useSettingLogic} from "@/hooks/useSettingLogic.ts";
 
 export const MpdMenuBar = () => {
     const {changeConnectionStatus, connected} = useConnectionLogic();
-    const status = useAppSelector((state) => state.status?.status);
-    const outputs = useAppSelector(state => state.output.outputs) ?? [];
-    const randomEnabled = status?.random ?? false;
-    const singleEnabled = status?.single ?? false;
-    const repeatEnabled = status?.repeat ?? false;
-    const consumeEnabled = status?.consume ?? false;
-    const dispatch = useAppDispatch();
+    const {changeOutputState, outputs} = useOutputsLogic();
+    const {changeRandom, changeSingle, changeRepeat, changeConsume, randomEnabled, singleEnabled, repeatEnabled, consumeEnabled} = useSettingLogic();
 
     return (
         <Menubar>
@@ -50,19 +38,19 @@ export const MpdMenuBar = () => {
                             <MenubarContent>
                                 <MenubarCheckboxItem
                                     checked={randomEnabled}
-                                    onClick={() => dispatch(wsSend(setRandom(!randomEnabled)))}>
+                                    onClick={changeRandom}>
                                     Random
                                 </MenubarCheckboxItem>
                                 <MenubarCheckboxItem
-                                    onClick={() => dispatch(wsSend(setSingle(!singleEnabled)))}
+                                    onClick={changeSingle}
                                     checked={singleEnabled}>Single
                                 </MenubarCheckboxItem>
                                 <MenubarCheckboxItem
-                                    onClick={() => dispatch(wsSend(setRepeat(!repeatEnabled)))}
+                                    onClick={changeRepeat}
                                     checked={repeatEnabled}>Repeat
                                 </MenubarCheckboxItem>
                                 <MenubarCheckboxItem
-                                    onClick={() => dispatch(wsSend(setConsume(!consumeEnabled)))}
+                                    onClick={changeConsume}
                                     checked={consumeEnabled}>Consume
                                 </MenubarCheckboxItem>
                             </MenubarContent>
@@ -73,7 +61,7 @@ export const MpdMenuBar = () => {
                                 {outputs.map((output, id) => <MenubarCheckboxItem
                                     checked={output.enabled}
                                     key={id}
-                                    onClick={() => dispatch(wsSend(setOutputState(output.id, !output.enabled)))}
+                                    onClick={() => changeOutputState(output)}
                                 >{output.name}</MenubarCheckboxItem>)}
                             </MenubarContent>
                         </MenubarMenu>

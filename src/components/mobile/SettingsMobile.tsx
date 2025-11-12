@@ -1,39 +1,31 @@
-import {useAppDispatch, useAppSelector} from "@/app/hooks.ts";
-import {wsSend} from "@/store/middleware/wsMiddleware.ts";
-import {setConsume, setRandom, setRepeat, setSingle} from "@/features/wsRequestPayloads.ts";
 import {CustomCheckboxItem} from "@/components/mobile/CustomCheckboxItem.tsx";
+import {useSettingLogic} from "@/hooks/useSettingLogic.ts";
 
 
 export const SettingsMobile = () => {
-    const status = useAppSelector((state) => state.status?.status);
-    // const outputs = useAppSelector(state => state.output.outputs) ?? [];
-    const randomEnabled = status?.random ?? false;
-    const singleEnabled = status?.single ?? false;
-    const repeatEnabled = status?.repeat ?? false;
-    const consumeEnabled = status?.consume ?? false;
-    const dispatch = useAppDispatch();
+    const {changeRandom, changeSingle, changeRepeat, changeConsume, randomEnabled, singleEnabled, repeatEnabled, consumeEnabled} = useSettingLogic();
 
     return <>
             <CustomCheckboxItem
-                onClick={() => dispatch(wsSend(setRandom(!randomEnabled)))}
+                onClick={changeRandom}
                 enabled={randomEnabled}
                 enabledMessage="Disable random play"
                 disabledMessage="Enable random play"
             />
             <CustomCheckboxItem
-                onClick={() => dispatch(wsSend(setSingle(!singleEnabled)))}
+                onClick={changeSingle}
                 enabled={singleEnabled}
                 enabledMessage="Disable single play"
                 disabledMessage="Enable single play"
             />
             <CustomCheckboxItem
-                onClick={() => dispatch(wsSend(setRepeat(!repeatEnabled)))}
+                onClick={changeRepeat}
                 enabled={repeatEnabled}
                 enabledMessage="Disable repeat"
                 disabledMessage="Enable repeat"
             />
             <CustomCheckboxItem
-                onClick={() => dispatch(wsSend(setConsume(!consumeEnabled)))}
+                onClick={changeConsume}
                 enabled={consumeEnabled}
                 enabledMessage="Disable consume"
                 disabledMessage="Enable consume"

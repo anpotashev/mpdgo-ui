@@ -20,10 +20,8 @@ const CurrentPlaylistMobile = () => {
         items,
         playing,
         activePos,
-        nextPrevPauseStopEnabled,
-        clearAndShuffleEnabled,
-        playEnabled} = useCurrentPlaylistLogic();
-    const {doPrev, doPlay, doPause, doStop, doNext} = usePlaybackLogic();
+        currentPlaylistIsEmpty} = useCurrentPlaylistLogic();
+    const {doPrev, doPlay, doPause, doStop, doNext, nextPrevPauseStopEnabled, playEnabled} = usePlaybackLogic();
     const buttonClass = "rounded-full" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
         "dark:bg-black dark:text-white dark:hover:bg-blue-400 dark:hover:text-white";
@@ -31,7 +29,7 @@ const CurrentPlaylistMobile = () => {
     const tableCellClass="text-left text-xs px-1 py-0.5 border-b align-top break-words whitespace-normal";
 
     return <>
-        {clearAndShuffleEnabled && <>
+        {currentPlaylistIsEmpty && <>
             {nextPrevPauseStopEnabled && <MpdPlayingProgress/>}
             <div className="whitespace-nowrap text-left">
                 <Button className={buttonClass}

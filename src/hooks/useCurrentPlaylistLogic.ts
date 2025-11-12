@@ -18,11 +18,8 @@ export function useCurrentPlaylistLogic() {
     const activePos = useAppSelector(state => state.status.status?.song);
 
     const dispatch = useAppDispatch();
-
-    const clearAndShuffleEnabled = items.length > 0
-    const status = useAppSelector((state) => state.status.status ?? null);
-    const nextPrevPauseStopEnabled = status?.state === "play" || status?.state === "pause";
-    const playEnabled = status?.state === "pause" || status?.state === "stop";
+    const currentPlaylistLength = items.length;
+    const currentPlaylistIsEmpty = currentPlaylistLength === 0;
     const formatTime = (seconds: number) => {
         const m = Math.floor(seconds / 60);
         const s = seconds % 60;
@@ -52,8 +49,7 @@ export function useCurrentPlaylistLogic() {
         items,
         playing,
         activePos,
-        nextPrevPauseStopEnabled,
-        clearAndShuffleEnabled,
-        playEnabled
+        currentPlaylistLength,
+        currentPlaylistIsEmpty,
     };
 }

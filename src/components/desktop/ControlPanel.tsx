@@ -6,13 +6,13 @@ import {useDragLogic} from "@/hooks/useDragLogic.ts";
 import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
 
 export const ControlPanel = () => {
-    const {clear, shuffle, deleteItem, items, nextPrevPauseStopEnabled, playEnabled, clearAndShuffleEnabled} = useCurrentPlaylistLogic();
-    const {doPrev, doPlay, doPause, doStop, doNext} = usePlaybackLogic();
+    const {clear, shuffle, deleteItem, currentPlaylistIsEmpty} = useCurrentPlaylistLogic();
+    const {doPrev, doPlay, doPause, doStop, doNext, nextPrevPauseStopEnabled, playEnabled} = usePlaybackLogic();
     const {doDragStop,draggingItem} = useDragLogic();
     const {deleteStoredByName} = useStoredPlaylistLogic()
     const playbackEnabled = !draggingItem;
-    const shuffleEnabled = playbackEnabled && clearAndShuffleEnabled;
-    const clearEnabled = ((!draggingItem || draggingItem.source === "playlist") && items.length > 0) || (draggingItem && draggingItem.source === "stored_playlist");
+    const shuffleEnabled = playbackEnabled && currentPlaylistIsEmpty;
+    const clearEnabled = ((!draggingItem || draggingItem.source === "playlist") && !currentPlaylistIsEmpty) || (draggingItem && draggingItem.source === "stored_playlist");
 
     const buttonClass = "rounded-full " +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +

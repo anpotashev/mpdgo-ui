@@ -1,6 +1,6 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
 
-interface Output {
+export interface Output {
     id: number;
     name: string;
     enabled: boolean;
