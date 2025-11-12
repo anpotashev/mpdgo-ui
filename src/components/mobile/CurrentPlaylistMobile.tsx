@@ -10,17 +10,8 @@ import {usePlaybackLogic} from "@/hooks/usePlaybackLogic.ts";
 
 const CurrentPlaylistMobile = () => {
 
-    const {shuffle,
-        deleteItem,
-        moveDown,
-        moveUp,
-        formatTime,
-        playItem,
-        clear,
-        items,
-        playing,
-        activePos,
-        currentPlaylistIsEmpty} = useCurrentPlaylistLogic();
+    const {shuffle, deleteItem, moveDown, moveUp, formatTime, playItem, clear, items,
+        playing, activePos, currentPlaylistIsEmpty} = useCurrentPlaylistLogic();
     const {doPrev, doPlay, doPause, doStop, doNext, nextPrevPauseStopEnabled, playEnabled} = usePlaybackLogic();
     const buttonClass = "rounded-full" +
         "     bg-white      text-black      hover:bg-blue-400      hover:text-black " +
@@ -29,7 +20,7 @@ const CurrentPlaylistMobile = () => {
     const tableCellClass="text-left text-xs px-1 py-0.5 border-b align-top break-words whitespace-normal";
 
     return <>
-        {currentPlaylistIsEmpty && <>
+        {!currentPlaylistIsEmpty && <>
             {nextPrevPauseStopEnabled && <MpdPlayingProgress/>}
             <div className="whitespace-nowrap text-left">
                 <Button className={buttonClass}
