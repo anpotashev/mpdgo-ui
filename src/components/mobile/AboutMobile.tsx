@@ -12,9 +12,9 @@ export const AboutMobile= () => {
             <CardContent>
                 {repos.map((repo, key) => (
                     <Item key={key}>
-                        <ItemContent>
-                        <ItemHeader>{repo.name}</ItemHeader>
-                        <ItemDescription>{repo.description}</ItemDescription>
+                        <ItemContent className="min-w-0">
+                        <ItemHeader  className="truncate">{repo.name}</ItemHeader>
+                        <ItemDescription  className="truncate">{repo.description}</ItemDescription>
                         </ItemContent>
                         <ItemActions>
                             <Button variant="outline" size="sm" onClick={() => window.open(repo.url, "_blank")}>
