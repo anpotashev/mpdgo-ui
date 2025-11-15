@@ -8,7 +8,7 @@ export function useStoredPlaylistLogic() {
     const dispatch = useAppDispatch();
     const deleteStoredByName = (name: string) => dispatch(wsSend(deleteStoredPlaylist(name)));
     const saveCurrentAsStored = (name: string) => dispatch(wsSend(saveStoredPlaylist(name)));
-    const storedPlaylists = useSelector((state: RootState) => state.storedPlaylists.playlists );
+    const storedPlaylists = useSelector((state: RootState) => state.storedPlaylists);
 
-    return {deleteStoredByName, saveCurrentAsStored, storedPlaylists};
+    return {deleteStoredByName, saveCurrentAsStored, storedPlaylists: storedPlaylists.playlists, storedPlaylistsLoading: storedPlaylists.loading};
 }

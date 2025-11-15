@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export interface StoredPlaylistsState {
     playlists:  StoredPlaylist[];
+    loading: boolean;
 }
 
 type IsoDateString = string;
@@ -12,16 +13,19 @@ export interface StoredPlaylist {
 }
 
 const initValue: StoredPlaylistsState = {
-    playlists: []
+    playlists: [],
+    loading: true,
 }
 
 export const storedPlaylistsSlice = createSlice({
     name: 'storedPlaylist',
     initialState: initValue,
     reducers: {
-        processWsPayload: (store, action) => {
-            store.playlists = action.payload?.Playlists ?? []
-        }
+        processWsPayload: (_store, action) => action.payload ?
+            {
+                playlists: action.payload?.Playlists ?? [],
+                loading: false,
+            } : initValue
     }
 })
 

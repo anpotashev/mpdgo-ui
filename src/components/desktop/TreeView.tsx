@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import {useSelector} from "react-redux";
-import type {RootState} from "@/store/store";
 import {type DragItem} from "@/features/dnd/dndSlice";
 import {ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger} from "@/components/ui/context-menu.tsx";
 import {useDragLogic} from "@/hooks/useDragLogic.ts";
 import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 import {useTreeLogic} from "@/hooks/useTreeLogic.ts";
 import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
+import {Spinner} from "@/components/ui/spinner.tsx";
+import {Label} from "@/components/ui/label.tsx";
 
 interface DirectoryItem {
     path: string;
@@ -89,14 +89,14 @@ const DirectoryNode: React.FC<{ dir: DirectoryItem }> = ({dir}) => {
 
 // Основной компонент дерева
 export const TreeView: React.FC = () => {
-    const root = useSelector((state: RootState) => state.tree.root);
+    const {rootFolder, treeLoading} = useTreeLogic();
     const {connected} = useConnectionLogic();
     if (!connected) {
         return <>[Not Connected]</>
     }
-    return (
+    return (treeLoading ? <Label><Spinner/>Loading...</Label> :
         <div className="flex flex-col items-start overflow-auto">
-            <DirectoryNode dir={root}/>
+            <DirectoryNode dir={rootFolder}/>
         </div>
     );
 };

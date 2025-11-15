@@ -6,16 +6,17 @@ import {SaveIcon} from "lucide-react";
 import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
 import {useDragLogic} from "@/hooks/useDragLogic.ts";
 import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
+import {Spinner} from "@/components/ui/spinner.tsx";
+import {Label} from "@/components/ui/label.tsx";
 
 export const StoredPlaylistsView = () => {
-    const {saveCurrentAsStored, storedPlaylists} = useStoredPlaylistLogic();
+    const {saveCurrentAsStored, storedPlaylists, storedPlaylistsLoading} = useStoredPlaylistLogic();
     const {doDragStart} = useDragLogic();
     const {items} = useCurrentPlaylistLogic();
     const currentPlaylistIsEmpty = items.length == 0;
     const [playlistName, setPlaylistName] = useState("");
 
-    return (
-        <>
+    return ( storedPlaylistsLoading ? <Label><Spinner/>Loading...</Label> : <>
             <div className="flex items-center gap-2">
                 <Input type={"text"}
                        placeholder={"Save current playlist as..."}

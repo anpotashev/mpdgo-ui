@@ -12,10 +12,12 @@ export interface PlaylistItem {
 }
 interface CurrentPlaylist {
     items: PlaylistItem[] | null
+    loading: boolean
 }
 
 const initValue: CurrentPlaylist = {
     items: null,
+    loading: true,
 }
 
 export const currentPlaylistSlice = createSlice({
@@ -23,13 +25,11 @@ export const currentPlaylistSlice = createSlice({
     initialState: initValue,
     reducers: {
         resetStatusState: () => initValue,
-        processWsPayload: (store, action: PayloadAction<any>) => {
-            if (action.payload?.items) {
-                store.items = action.payload.items as PlaylistItem[];
-            } else {
-                store.items = null;
-            }
-        }
+        processWsPayload: (_store, action: PayloadAction<any>) =>  (action.payload?.items) ?
+            {
+                items: action.payload.items as PlaylistItem[],
+                loading: false,
+            }: initValue
     },
 });
 

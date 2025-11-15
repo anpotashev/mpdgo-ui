@@ -12,8 +12,9 @@ import {
 import type {PlaylistItem} from "@/features/currentPlaylist/currentPlaylistSlice.ts";
 
 export function useCurrentPlaylistLogic() {
-
-    const items = useAppSelector(state => state.playlist.items) ?? [];
+    const playlist = useAppSelector(state => state.playlist);
+    const items = playlist.items ?? [];
+    const loading = playlist.loading;
     const playing = useAppSelector(state => state.status?.status?.state === "play");
     const activePos = useAppSelector(state => state.status.status?.song);
 
@@ -54,5 +55,6 @@ export function useCurrentPlaylistLogic() {
         activePos,
         currentPlaylistLength,
         currentPlaylistIsEmpty,
+        playlistLoading: loading,
     };
 }

@@ -10,12 +10,14 @@ import {
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 import {useDragLogic} from "@/hooks/useDragLogic.ts";
+import {Spinner} from "@/components/ui/spinner.tsx";
+import {Label} from "@/components/ui/label.tsx";
 
 type Column = "Id" | "Title" | "Artist" | "Album" | "Time"
 
 export const PlaylistPanel: React.FC = () => {
 
-        const {addByPathToPos, moveFromPosToPos, addStoredToPos, playItem, items, activePos, playing, formatTime} = useCurrentPlaylistLogic();
+        const {addByPathToPos, moveFromPosToPos, addStoredToPos, playItem, items, activePos, playing, formatTime, playlistLoading} = useCurrentPlaylistLogic();
         const {doDragStop, doDragStart, draggingItem} = useDragLogic();
 
         // Столбец, у которого вызвали контекстное меню
@@ -68,7 +70,7 @@ export const PlaylistPanel: React.FC = () => {
             }
             doDragStop();
         }
-        return (
+    return playlistLoading ? <Label className="justify-center"><Spinner/>Loading...</Label> : (
             <ScrollArea className="w-full h-full" onMouseUp={() => handleMouseUp(items.length ? items.length : 0)}>
                 <Table className={"table-fixed"}>
                     <ContextMenu>

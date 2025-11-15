@@ -21,7 +21,8 @@ export interface FileItem {
 export type TreeItem = DirectoryItem | FileItem;
 
 interface Tree {
-    root: DirectoryItem
+    root: DirectoryItem;
+    loading: boolean;
 }
 
 const initValue: Tree = {
@@ -30,20 +31,18 @@ const initValue: Tree = {
         name: "/",
         children: [],
     },
+    loading: true,
 }
 
 export const treeSlice = createSlice({
     name: 'tree',
     initialState: initValue,
     reducers: {
-        resetTreeState: () => initValue,
-        processWsPayload: (store, action: PayloadAction<any>) => {
-            if (action.payload) {
-                store.root = action.payload as DirectoryItem
-            } else {
-                store.root = initValue.root;
-            }
-        }
+        processWsPayload: (_store, action: PayloadAction<any>) =>
+            action.payload ? {
+                root: action.payload as DirectoryItem,
+                loading: false,
+            } : initValue
     },
 });
 
