@@ -16,6 +16,7 @@ export const connectionSlice = createSlice({
         name: 'connection',
         initialState: initValue,
         reducers: {
+            resetConnectionState: () => initValue,
             processConnectionState: (_state, action) =>
                 action.payload ?
                     {connected: (action.payload as GetConnectionStateResponse).connected}
