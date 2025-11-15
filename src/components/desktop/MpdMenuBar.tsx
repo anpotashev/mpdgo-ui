@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/menubar"
 import {ModeToggle} from "@/components/desktop/ModeToggle.tsx";
 import {
+    InfoIcon,
     Music4Icon,
     PlugIcon,
     SettingsIcon, SpeakerIcon
@@ -14,13 +15,20 @@ import {Label} from "@/components/ui/label.tsx";
 import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
 import {useOutputsLogic} from "@/hooks/useOutputsLogic.ts";
 import {useSettingLogic} from "@/hooks/useSettingLogic.ts";
+import {useState} from "react";
+import {AboutDialog} from "@/components/desktop/AboutDialog.tsx";
 
 export const MpdMenuBar = () => {
     const {changeConnectionStatus, connected} = useConnectionLogic();
     const {changeOutputState, outputs} = useOutputsLogic();
     const {changeRandom, changeSingle, changeRepeat, changeConsume, randomEnabled, singleEnabled, repeatEnabled, consumeEnabled} = useSettingLogic();
+    const [dialogVisible, setDialogVisible] = useState<boolean>(false);
 
-    return (
+    const showAbout = () => {
+        setDialogVisible(true);
+    }
+
+    return (<>
         <Menubar>
             <Label className={"text-blue-400"}><Music4Icon/>MPD Client</Label>
             <MenubarMenu>
@@ -66,8 +74,12 @@ export const MpdMenuBar = () => {
                             </MenubarContent>
                         </MenubarMenu>
                     </>}
+                <MenubarTrigger onClick={showAbout}><InfoIcon/>About</MenubarTrigger>
+                <MenubarContent/>
             </MenubarMenu>
             <ModeToggle/>
         </Menubar>
+            <AboutDialog isOpen={dialogVisible} onClose={() =>setDialogVisible(false)}/>
+        </>
     );
 }

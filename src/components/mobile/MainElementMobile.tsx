@@ -4,7 +4,7 @@ import {SettingsMobile} from "@/components/mobile/SettingsMobile.tsx";
 import {ConnectionMobile} from "@/components/mobile/ConnectionMobile.tsx";
 import {ModeToggleMobile} from "@/components/mobile/ModeToggleMobile.tsx";
 import {
-    FileMusicIcon, FolderTreeIcon,
+    FileMusicIcon, FolderTreeIcon, InfoIcon,
     ListMusicIcon,
     Moon, PlayIcon,
     PlugIcon,
@@ -21,6 +21,7 @@ import CurrentPlaylistMobile from "@/components/mobile/CurrentPlaylistMobile.tsx
 import {useConnectionLogic} from "@/hooks/useConnectionLogic.ts";
 import {useCurrentPlaylistLogic} from "@/hooks/useCurrentPlaylistLogic.ts";
 import {useStoredPlaylistLogic} from "@/hooks/useStoredPlaylistLogic.ts";
+import {AboutMobile} from "@/components/mobile/AboutMobile.tsx";
 
 export const MainElementMobile = () => {
     const {connected} = useConnectionLogic();
@@ -70,6 +71,10 @@ export const MainElementMobile = () => {
                     <AccordionContent><StoredPlaylistsMobile/></AccordionContent>
                 </AccordionItem>}
             </>}
+            <AccordionItem value="About">
+                <AccordionTrigger><Label><InfoIcon className="size-5"/>About</Label></AccordionTrigger>
+                <AccordionContent><AboutMobile/></AccordionContent>
+            </AccordionItem>
         </Accordion>
     </>;
 }
