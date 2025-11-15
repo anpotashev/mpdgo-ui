@@ -1,4 +1,4 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 export interface Output {
     id: number;
@@ -18,14 +18,10 @@ export const outputSlice = createSlice({
     name: 'output',
     initialState: initValue,
     reducers: {
-        resetStatusState: () => initValue,
-        processWsPayload: (store, action: PayloadAction<any>) => {
-            if (action.payload && action.payload.outputs) {
-                store.outputs = action.payload.outputs as Output[]
-            } else {
-                store.outputs = null;
-            }
-        }
+        processWsPayload: (_store, action) => action.payload
+            ? {
+                outputs: action.payload.outputs ?? []
+            } : initValue
     },
 });
 

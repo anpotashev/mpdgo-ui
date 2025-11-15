@@ -1,4 +1,4 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 export interface DirectoryItem {
     path: string;
@@ -38,7 +38,7 @@ export const treeSlice = createSlice({
     name: 'tree',
     initialState: initValue,
     reducers: {
-        processWsPayload: (_store, action: PayloadAction<any>) =>
+        processWsPayload: (_store, action) =>
             action.payload ? {
                 root: action.payload as DirectoryItem,
                 loading: false,

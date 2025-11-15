@@ -1,4 +1,4 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 export interface PlaylistItem {
     file: string;
@@ -24,10 +24,9 @@ export const currentPlaylistSlice = createSlice({
     name: 'currentPlaylist',
     initialState: initValue,
     reducers: {
-        resetStatusState: () => initValue,
-        processWsPayload: (_store, action: PayloadAction<any>) =>  (action.payload?.items) ?
+        processWsPayload: (_store, action) =>  (action.payload) ?
             {
-                items: action.payload.items as PlaylistItem[],
+                items: action.payload.items ?? [] as PlaylistItem[],
                 loading: false,
             }: initValue
     },

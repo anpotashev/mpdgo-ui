@@ -1,11 +1,11 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 interface GetConnectionStateResponse {
     connected: boolean;
 }
 
 interface ConnectionState {
-    connected: boolean|null;
+    connected: boolean | null;
 }
 
 const initValue: ConnectionState = {
@@ -16,14 +16,10 @@ export const connectionSlice = createSlice({
         name: 'connection',
         initialState: initValue,
         reducers: {
-            processConnectionState: (state, action: PayloadAction<any>) => {
-                if (action.payload !== null) {
-                    state.connected = (action.payload as GetConnectionStateResponse).connected;
-                } else {
-                    state.connected = null;
-                }
-            },
-            resetConnectionState: () => initValue
+            processConnectionState: (_state, action) =>
+                action.payload ?
+                    {connected: (action.payload as GetConnectionStateResponse).connected}
+                    : initValue
         },
     }
 );

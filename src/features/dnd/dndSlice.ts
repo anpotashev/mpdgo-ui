@@ -1,15 +1,17 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 export interface DragItem {
-    source: "tree"|"playlist" | "stored_playlist"
+    source: "tree" | "playlist" | "stored_playlist"
     path: string | null
     pos: number | null
     name: string | null
     id: number | null
 }
+
 interface DragState {
-    draggingItem: DragItem|null
+    draggingItem: DragItem | null
 }
+
 const initValue: DragState = {
     draggingItem: null
 }
@@ -18,12 +20,10 @@ export const dndSlice = createSlice({
     name: 'dnd',
     initialState: initValue,
     reducers: {
-        startDrag: (state, action: PayloadAction<DragItem>) => {
-            state.draggingItem = action.payload;
-        },
-        stopDrag: (store) => {
-            store.draggingItem = null;
-        },
+        startDrag: (_state, action) => action.payload ?
+            {draggingItem: action.payload}
+            : initValue,
+        stopDrag: () => initValue,
     },
 });
 

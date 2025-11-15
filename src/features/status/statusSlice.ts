@@ -1,4 +1,4 @@
-import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
 
 interface SongTime {
     current: number,
@@ -40,14 +40,8 @@ export const statusSlice = createSlice({
     name: 'status',
     initialState: initValue,
     reducers: {
-        resetStatusState: () => initValue,
-        processWsPayload: (store, action: PayloadAction<any>) => {
-            if (action.payload) {
-                store.status = action.payload as MpdStatus;
-            } else {
-                store.status= null;
-            }
-        }
+        processWsPayload: (_store, action) => action.payload ?
+            { status: action.payload} as StatusState: initValue
     },
 });
 
